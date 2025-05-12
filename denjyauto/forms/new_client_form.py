@@ -13,21 +13,20 @@ class NewClientForm(tk.Toplevel):
         self.title("Нов клиент и кола")
         self.geometry("400x400")
 
-        # Полета за клиент
+        # Client model
         self.name_entry = self._create_labeled_entry("Име на клиент")
         self.phone_entry = self._create_labeled_entry("Телефон")
         ttk.Label(self, text="Бележки:").pack()
         self.notes_text = tk.Text(self, height=3)
         self.notes_text.pack()
 
-        # Полета за кола
+        # Car model
         self.reg_number_entry = self._create_labeled_entry("Рег. номер")
         self.vin_entry = self._create_labeled_entry("VIN")
         self.brand_entry = self._create_labeled_entry("Марка")
         self.model_entry = self._create_labeled_entry("Модел")
         self.year_entry = self._create_labeled_entry("Година")
 
-        # Бутон
         save_button = ttk.Button(self, text="Запази", command=self.save_client)
         save_button.pack(pady=10)
 

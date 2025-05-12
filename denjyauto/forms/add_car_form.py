@@ -1,5 +1,4 @@
 import tkinter as tk
-from distutils.command.clean import clean
 from tkinter import ttk
 from denjyauto.database import add_car_to_client, get_all_clients
 

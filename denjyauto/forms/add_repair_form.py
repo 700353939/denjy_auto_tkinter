@@ -19,17 +19,14 @@ class AddRepairForm(tk.Toplevel):
 
         ttk.Label(self, text=f"Колa: {car.registration_number}", font=("Arial", 12, "bold")).pack(pady=5)
 
-        # Дата
         ttk.Label(self, text="Дата:").pack()
         self.date_var = tk.StringVar(value=str(date.today()))
         ttk.Entry(self, textvariable=self.date_var).pack()
 
-        # Километри
         ttk.Label(self, text="Километри:").pack()
         self.mileage_var = tk.StringVar()
         ttk.Entry(self, textvariable=self.mileage_var).pack()
 
-        # Видове ремонт
         ttk.Label(self, text="Видове ремонт:").pack()
         self.repair_type_vars = {}
         for option in REPAIR_TYPE_OPTIONS:
@@ -38,17 +35,14 @@ class AddRepairForm(tk.Toplevel):
             chk.pack(anchor="w", padx=20)
             self.repair_type_vars[option] = var
 
-        # Цена
         ttk.Label(self, text="Цена (лв):").pack()
         self.price_var = tk.StringVar()
         ttk.Entry(self, textvariable=self.price_var).pack()
 
-        # Бележки
         ttk.Label(self, text="Бележки:").pack()
         self.notes_text = tk.Text(self, height=4)
         self.notes_text.pack()
 
-        # Запази бутон
         ttk.Button(self, text="Запази ремонта", command=self.save_repair).pack(pady=10)
 
     def save_repair(self):

@@ -1,6 +1,11 @@
 from tkinter import Frame, Canvas, Scrollbar, VERTICAL, HORIZONTAL
 from tkinter import ttk
 
+
+def clear_content(container):
+    for widget in container.winfo_children():
+        widget.destroy()
+
 def create_scrollable_frame(parent, scroll="vertical"):
     container = Frame(parent)
     canvas = Canvas(container, borderwidth=0)
