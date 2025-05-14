@@ -2,6 +2,7 @@ from tkinter import ttk
 from denjyauto.ui.widgets import create_scrollable_frame
 
 from denjyauto.ui.clients_ui import load_clients, open_new_client_form
+from denjyauto.ui.income_ui import income
 
 
 class MainWindow:
@@ -23,6 +24,9 @@ class MainWindow:
 
         self.new_client_button = ttk.Button(self.toolbar, text="Нов клиент", command=lambda: open_new_client_form(master))
         self.new_client_button.grid(row=0, column=1, padx=5)
+
+        self.profit_button = ttk.Button(self.toolbar, text="Приход", command=lambda: income(master))
+        self.profit_button.grid(row=0, column=2, padx=5)
 
 
         load_clients(master, self.content_frame)

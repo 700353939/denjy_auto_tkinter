@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey, Text
 from sqlalchemy.orm import relationship
-from datetime import date
 from denjyauto.models.base import Base
 
 class Car(Base):
