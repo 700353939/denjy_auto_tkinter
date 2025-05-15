@@ -10,14 +10,16 @@ def income(master):
     win = tk.Toplevel(master)
     win.title("Приходи от ремонти за период")
     win.geometry("400x200")
+    win.configure(bg="#111")
 
     ttk.Label(win, text="От дата (гггг-мм-дд):").pack()
     start_date_var = tk.StringVar(value=str(datetime.today().date()))
-    ttk.Entry(win, textvariable=start_date_var).pack()
+    ttk.Entry(win, textvariable=start_date_var, foreground="red").pack()
 
     ttk.Label(win, text="До дата (гггг-мм-дд):").pack()
     end_date_var = tk.StringVar(value=str(datetime.today().date()))
-    ttk.Entry(win, textvariable=end_date_var).pack(padx=10, pady=5)
+    ttk.Entry(win, textvariable=end_date_var, foreground="red").pack(padx=10, pady=5)
+
 
     def calculate_income():
         try:
@@ -36,7 +38,7 @@ def income(master):
                 .all()
             )
             total = sum([r[0] for r in total_income if r[0] is not None])
-            result_label.config(text=f"Общо: {total:.2f} лв.")
+            result_label.config(text=f"Общо: {total:.2f} лв.", foreground="red")
         finally:
             session.close()
 

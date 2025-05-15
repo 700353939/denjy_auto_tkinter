@@ -9,7 +9,7 @@ class MainWindow:
     def __init__(self, master):
         self.master = master
         master.title("DenjyAuto")
-        master.geometry("800x600")
+        master.geometry("900x600")
 
         self.header = ttk.Label(master, text="Списък с клиенти", font=("Arial", 16))
         self.header.pack(pady=10)
@@ -17,7 +17,7 @@ class MainWindow:
         self.toolbar = ttk.Frame(master)
         self.toolbar.pack(pady=5)
 
-        self.content_frame = create_scrollable_frame(master, scroll="vertical")
+        self.content_frame = create_scrollable_frame(master, scroll="both")
 
         self.refresh_button = ttk.Button(self.toolbar, text="Обнови списъка", command=lambda: load_clients(master, self.content_frame))
         self.refresh_button.grid(row=0, column=0, padx=5)

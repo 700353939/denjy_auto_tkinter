@@ -16,8 +16,9 @@ class AddRepairForm(tk.Toplevel):
         self.title("Добавяне на ремонт")
         self.car = car
         self.geometry("600x600")
+        self.configure(bg="#111")
 
-        ttk.Label(self, text=f"Колa: {car.registration_number}", font=("Arial", 12, "bold")).pack(pady=5)
+        ttk.Label(self, text=f"Колa: {car.registration_number}", font=("Arial", 12, "bold"), foreground="red").pack(pady=5)
 
         ttk.Label(self, text="Дата:").pack()
         self.date_var = tk.StringVar(value=str(date.today()))
@@ -40,7 +41,7 @@ class AddRepairForm(tk.Toplevel):
         ttk.Entry(self, textvariable=self.price_var).pack()
 
         ttk.Label(self, text="Бележки:").pack()
-        self.notes_text = tk.Text(self, height=4)
+        self.notes_text = tk.Text(self, height=4, background="#111")
         self.notes_text.pack()
 
         ttk.Button(self, text="Запази ремонта", command=self.save_repair).pack(pady=10)

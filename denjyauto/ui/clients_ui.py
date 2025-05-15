@@ -21,7 +21,7 @@ def load_clients(master, content_frame):
 
             client_frame = ttk.LabelFrame(content_frame,
                                           text=f"Име на клиента: {client_name}, телефон: {client_phone}", padding=10)
-            client_frame.pack(fill="x", pady=5)
+            client_frame.pack(expand=True, fill="both")
 
             ttk.Button(
                 client_frame,
@@ -50,10 +50,11 @@ def edit_client_notes(master, client_name, client_notes, save_callback):
     win = tk.Toplevel(master)
     win.title(f"Бележки към клиент {client_name}")
     win.geometry("400x300")
+    win.configure(bg="#111")
 
-    ttk.Label(win, text="Редактирай бележката:").pack(padx=10, pady=5)
+    ttk.Label(win, text="Редактирай бележката:", foreground="red").pack(padx=10, pady=5)
 
-    text_widget = tk.Text(win, wrap="word", height=10)
+    text_widget = tk.Text(win, wrap="word", height=10, background="#111", foreground="white")
     text_widget.pack(padx=10, pady=5, fill="both", expand=True)
 
     if client_notes:

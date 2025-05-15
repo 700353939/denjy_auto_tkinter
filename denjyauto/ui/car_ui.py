@@ -14,6 +14,7 @@ def show_car_details(master, car, client_name):
 
     win = tk.Toplevel(master)
     win.title(f"Клиент: {client_name}, кола: {car.registration_number}")
+    win.configure(background="#111")
 
     ttk.Button(win, text="Добави ремонт", command=lambda: AddRepairForm(win, car)).pack(
         anchor="nw",
@@ -47,6 +48,7 @@ def show_car_details(master, car, client_name):
 
 def show_repair_details(master, repair):
     win = tk.Toplevel(master)
+    win.configure(bg="#111")
     win.title(f"Дата на ремонта: {repair.repair_date}")
     ttk.Label(win, text=f"Километри при ремонта: {repair.repair_km}").pack(padx=10, pady=5)
     ttk.Label(win, text=f"Ремонти: {repair.repairs_type_field}").pack(padx=10, pady=5)
