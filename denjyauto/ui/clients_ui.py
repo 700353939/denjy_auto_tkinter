@@ -19,28 +19,48 @@ def load_clients(master, content_frame):
             client_name = client.name
             client_phone = client.phone_number
 
-            client_frame = ttk.LabelFrame(content_frame,
-                                          text=f"Име на клиента: {client_name}, телефон: {client_phone}", padding=10)
-            client_frame.pack(expand=True, fill="both")
+            client_frame = ttk.LabelFrame(
+                content_frame,
+                text=f"Име на клиента: {client_name}, телефон: {client_phone}",
+                padding=10
+            )
+            client_frame.pack(expand=True, fill="both", pady=5)
 
             ttk.Button(
                 client_frame,
                 text="Бележки за клиента",
-                command=lambda cl=client: edit_client_notes(master, cl.name, cl.client_notes,
-                    lambda updated: (save_client_note(cl.id, updated), load_clients(master, content_frame))
-                )).pack(side="left", padx=20)
+                command=lambda cl=client: edit_client_notes(
+                    master,
+                    cl.name,
+                    cl.client_notes,
+                    lambda updated: (
+                        save_client_note(cl.id, updated),
+                        load_clients(master, content_frame)
+                    )
+                )
+            ).pack(side="left", padx=10)
 
-            ttk.Button(client_frame, text="Добави кола", command=lambda c=client: add_new_car_to_client(master, c)).pack(
-                side="left", padx=20)
+            ttk.Button(
+                client_frame,
+                text="Добави кола",
+                command=lambda c=client: add_new_car_to_client(master, c)
+            ).pack(side="left", padx=10)
+
+            car_buttons_frame = ttk.Frame(client_frame)
+            car_buttons_frame.pack(pady=10, fill="x")
 
             cars = session.query(Car).filter_by(client_id=client.id).all()
             if not cars:
                 ttk.Label(client_frame, text="Няма регистрирани коли.").pack(anchor="w", padx=20)
             else:
-                for car in cars:
-                    ttk.Button(client_frame, text=f"Колa: {car.registration_number}",
-                               command=lambda c=car: show_car_details(master, c, client_name)).pack(side="left",
-                                                                                                     padx=5, pady=2)
+                for i, car in enumerate(cars):
+                    row = i // 5
+                    column = i % 5
+                    ttk.Button(
+                        car_buttons_frame,
+                        text=f"Колa: {car.registration_number}",
+                        command=lambda c=car: show_car_details(master, c, client_name)
+                    ).grid(row=row, column=column, padx=5, pady=5, sticky="w")
 
     finally:
         session.close()

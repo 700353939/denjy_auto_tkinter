@@ -41,7 +41,7 @@ class AddRepairForm(tk.Toplevel):
         ttk.Entry(self, textvariable=self.price_var).pack()
 
         ttk.Label(self, text="Бележки:").pack()
-        self.notes_text = tk.Text(self, height=4, background="#111")
+        self.notes_text = tk.Text(self, height=4, background="#111", foreground="white")
         self.notes_text.pack()
 
         ttk.Button(self, text="Запази ремонта", command=self.save_repair).pack(pady=10)

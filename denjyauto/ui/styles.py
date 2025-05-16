@@ -24,7 +24,7 @@ def apply_custom_style():
     # Entry
     style.configure("TEntry", fieldbackground="#111", foreground="white", insertcolor="white")
 
-    # Text widget – това е от tk, не ttk
+    # Text widget
     ttk.Entry.configure = lambda *a, **kw: None  # предотвратява грешка при monkey patch (за съвместимост)
 
     # Treeview

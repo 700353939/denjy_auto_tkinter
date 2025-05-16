@@ -11,7 +11,7 @@ class MainWindow:
         master.title("DenjyAuto")
         master.geometry("900x600")
 
-        self.header = ttk.Label(master, text="Списък с клиенти", font=("Arial", 16))
+        self.header = ttk.Label(master, text="D E N J Y  A U T O", font=("Arial", 16), foreground="red")
         self.header.pack(pady=10)
 
         self.toolbar = ttk.Frame(master)

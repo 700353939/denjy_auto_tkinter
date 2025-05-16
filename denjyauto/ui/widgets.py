@@ -11,7 +11,7 @@ def create_scrollable_frame(parent, scroll="vertical"):
     container = Frame(parent, bg="#111")  # черен фон
     canvas = Canvas(container, borderwidth=0, background="#111", highlightthickness=0)
 
-    scrollable_frame = ttk.Frame(canvas, style="TFrame")  # стилът трябва да е дефиниран с черен фон
+    scrollable_frame = ttk.Frame(canvas, style="TFrame")
 
     def _on_configure(event):
         canvas.configure(scrollregion=canvas.bbox("all"))
@@ -43,7 +43,7 @@ def create_scrollable_frame(parent, scroll="vertical"):
     def _on_linux_scroll_down(event):
         canvas.yview_scroll(1, "units")
 
-    scrollable_frame.bind_all("<MouseWheel>", _on_mousewheel)
+    canvas.bind("<MouseWheel>", _on_mousewheel)
     scrollable_frame.bind_all("<Button-4>", _on_linux_scroll_up)
     scrollable_frame.bind_all("<Button-5>", _on_linux_scroll_down)
 
