@@ -9,7 +9,6 @@ class MainWindow:
     def __init__(self, master):
         self.master = master
         master.title("DenjyAuto")
-        master.geometry("900x600")
 
         self.header = ttk.Label(master, text="D E N J Y  A U T O", font=("Arial", 16), foreground="red")
         self.header.pack(pady=10)

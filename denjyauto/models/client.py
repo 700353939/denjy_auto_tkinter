@@ -10,4 +10,8 @@ class Client(Base):
     phone_number = Column(String(20), nullable=True)
     client_notes = Column(Text, nullable=True)
 
-    cars = relationship("Car", back_populates="client")
+    cars = relationship(
+        "Car",
+        back_populates="client",
+        cascade="all, delete"
+    )

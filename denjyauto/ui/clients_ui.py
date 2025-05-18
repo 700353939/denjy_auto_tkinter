@@ -1,7 +1,7 @@
-import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from sqlalchemy.orm import Session
 from denjyauto.database import SessionLocal
+from denjyauto.forms.edit_client_form import EditClientForm
 from denjyauto.forms.new_client_form import NewClientForm
 from denjyauto.models.client import Client
 from denjyauto.models.car import Car
@@ -22,84 +22,64 @@ def load_clients(master, content_frame):
             client_frame = ttk.LabelFrame(
                 content_frame,
                 text=f"Име на клиента: {client_name}, телефон: {client_phone}",
-                padding=10
+                padding=10,
+                labelanchor="n"
             )
             client_frame.pack(expand=True, fill="both", pady=5)
 
-            ttk.Button(
+            cars_frame = ttk.Frame(
                 client_frame,
-                text="Бележки за клиента",
-                command=lambda cl=client: edit_client_notes(
-                    master,
-                    cl.name,
-                    cl.client_notes,
-                    lambda updated: (
-                        save_client_note(cl.id, updated),
-                        load_clients(master, content_frame)
-                    )
-                )
-            ).pack(side="left", padx=10)
-
-            ttk.Button(
-                client_frame,
-                text="Добави кола",
-                command=lambda c=client: add_new_car_to_client(master, c)
-            ).pack(side="left", padx=10)
-
-            car_buttons_frame = ttk.Frame(client_frame)
-            car_buttons_frame.pack(pady=10, fill="x")
+                padding=10
+            )
+            cars_frame.pack(side="top", fill="y", pady=5)
 
             cars = session.query(Car).filter_by(client_id=client.id).all()
             if not cars:
-                ttk.Label(client_frame, text="Няма регистрирани коли.").pack(anchor="w", padx=20)
+                ttk.Label(client_frame, text="Няма регистрирани автомобили.").pack(anchor="w", padx=20)
             else:
                 for i, car in enumerate(cars):
                     row = i // 5
                     column = i % 5
                     ttk.Button(
-                        car_buttons_frame,
-                        text=f"Колa: {car.registration_number}",
+                        cars_frame,
+                        text=f"{car.registration_number}",
                         command=lambda c=car: show_car_details(master, c, client_name)
-                    ).grid(row=row, column=column, padx=5, pady=5, sticky="w")
+                    ).pack(side="left", padx=10)
+
+            ttk.Button(
+                client_frame,
+                text="ДОБАВИ АВТОМОБИЛ",
+                style="RedText.TButton",
+                command=lambda c=client: add_new_car_to_client(master, c)
+            ).pack(side="left", padx=10)
+
+            ttk.Button(
+                client_frame,
+                text="РЕДАКТИРАЙ КЛИЕНТ",
+                style="RedText.TButton",
+                command=lambda cl=client: edit_client(master, cl, content_frame)
+            ).pack(side="left", padx=10)
+
+            ttk.Button(
+                client_frame,
+                text="ИЗТРИЙ КЛИЕНТ",
+                style="RedText.TButton",
+                command=lambda cl=client: delete_client(
+                    master,
+                    cl,
+                    reload_callback=lambda: load_clients(master, content_frame))
+            ).pack(side="left", padx=10)
 
     finally:
         session.close()
-
-
-def edit_client_notes(master, client_name, client_notes, save_callback):
-    win = tk.Toplevel(master)
-    win.title(f"Бележки към клиент {client_name}")
-    win.geometry("400x300")
-    win.configure(bg="#111")
-
-    ttk.Label(win, text="Редактирай бележката:", foreground="red").pack(padx=10, pady=5)
-
-    text_widget = tk.Text(win, wrap="word", height=10, background="#111", foreground="white")
-    text_widget.pack(padx=10, pady=5, fill="both", expand=True)
-
-    if client_notes:
-        text_widget.insert("1.0", client_notes)
-
-    def save_notes():
-        updated_notes = text_widget.get("1.0", "end-1c")
-        save_callback(updated_notes)
-        win.destroy()
-
-    ttk.Button(win, text="Запази", command=save_notes).pack(pady=10)
-
-
-def save_client_note(client_id, updated_note):
-    session = SessionLocal()
-    try:
-        client = session.query(Client).get(client_id)
-        client.client_notes = updated_note
-        session.commit()
-    finally:
-        session.close()
-
 
 def open_new_client_form(master):
     NewClientForm(master)
+
+def edit_client(master, client, content_frame):
+    EditClientForm(master, client, reload_callback=lambda: load_clients(master, content_frame))
+
+    load_clients(master, content_frame)
 
 def show_client_details(master, content_frame, client):
     load_clients(master, content_frame)
@@ -109,3 +89,23 @@ def show_client_details(master, content_frame, client):
 
     ttk.Label(client_frame, text=f"Име: {client.name}").pack(padx=10, pady=5)
     ttk.Label(client_frame, text=f"Телефон: {client.phone_number}").pack(padx=10, pady=5)
+
+def delete_client(master, client, reload_callback=None):
+    confirm = messagebox.askyesno("Потвърждение",
+                                  f"Сигурен ли си, че искаш да изтриеш клиента '{client.name}' и всички свързани данни?")
+    if not confirm:
+        return
+
+    session: Session = SessionLocal()
+    try:
+        client = session.query(Client).get(client.id)
+        session.delete(client)
+        session.commit()
+        messagebox.showinfo("Успех", f"Клиентът '{client.name}' е изтрит.")
+        if reload_callback:
+            reload_callback()
+    except Exception as e:
+        session.rollback()
+        messagebox.showerror("Грешка", f"Неуспешно изтриване: {e}")
+    finally:
+        session.close()

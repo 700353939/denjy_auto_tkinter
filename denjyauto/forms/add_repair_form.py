@@ -7,7 +7,11 @@ from denjyauto.database import SessionLocal
 from denjyauto.models.repair import Repair
 
 REPAIR_TYPE_OPTIONS = [
-    "Смяна масло", "Спирачки", "Ангренаж", "Съединител", "Окачване", "Друг"
+    "Маслен филтър", "Горивен филтър", "Въздушен филтър", "Филтър купе",
+    "Диагностика", "Смяна на масло", "Смяна на гуми",
+    "Ремонт на ходова част", "Ремонт на двигателя", "Козметичен ремонт",
+    "Записване на ден и час: Запиши в бележки",
+    "Друг ремонт: Запиши в бележки"
 ]
 
 class AddRepairForm(tk.Toplevel):
@@ -18,7 +22,7 @@ class AddRepairForm(tk.Toplevel):
         self.geometry("600x600")
         self.configure(bg="#111")
 
-        ttk.Label(self, text=f"Колa: {car.registration_number}", font=("Arial", 12, "bold"), foreground="red").pack(pady=5)
+        ttk.Label(self, text=f"Автомобил: {car.registration_number}", font=("Arial", 12, "bold"), foreground="red").pack(pady=5)
 
         ttk.Label(self, text="Дата:").pack()
         self.date_var = tk.StringVar(value=str(date.today()))
@@ -41,7 +45,7 @@ class AddRepairForm(tk.Toplevel):
         ttk.Entry(self, textvariable=self.price_var).pack()
 
         ttk.Label(self, text="Бележки:").pack()
-        self.notes_text = tk.Text(self, height=4, background="#111", foreground="white")
+        self.notes_text = tk.Text(self, height=4, background="#111", foreground="white", insertbackground="white")
         self.notes_text.pack()
 
         ttk.Button(self, text="Запази ремонта", command=self.save_repair).pack(pady=10)
@@ -55,7 +59,7 @@ class AddRepairForm(tk.Toplevel):
             repair = Repair(
                 repair_date = datetime.strptime(self.date_var.get(), "%Y-%m-%d").date(),
                 repair_km=int(self.mileage_var.get()),
-                repairs_type_field=",".join(selected_types),
+                repairs_type_field="\n".join(selected_types),
                 repair_price=float(self.price_var.get()),
                 repair_notes=self.notes_text.get("1.0", "end").strip(),
                 car_id=self.car.id

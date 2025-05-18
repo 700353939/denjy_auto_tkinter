@@ -10,7 +10,7 @@ Session = sessionmaker(bind=engine)
 class NewClientForm(tk.Toplevel):
     def __init__(self, master):
         super().__init__(master)
-        self.title("Нов клиент и кола")
+        self.title("Нов клиент и автомобил")
         self.geometry("400x400")
         self.configure(bg="#111")
 
@@ -18,7 +18,7 @@ class NewClientForm(tk.Toplevel):
         self.name_entry = self._create_labeled_entry("Име на клиент")
         self.phone_entry = self._create_labeled_entry("Телефон")
         ttk.Label(self, text="Бележки:", foreground="red").pack()
-        self.notes_text = tk.Text(self, height=3, background="#111", foreground="white")
+        self.notes_text = tk.Text(self, height=3, background="#111", foreground="white", insertbackground="white")
         self.notes_text.pack()
 
         # Car model
@@ -60,7 +60,7 @@ class NewClientForm(tk.Toplevel):
             session.add(car)
 
             session.commit()
-            messagebox.showinfo("Успех", "Клиентът и колата са записани.")
+            messagebox.showinfo("Успех", "Клиентът и автомобила са записани.")
             self.destroy()
         except Exception as e:
             session.rollback()

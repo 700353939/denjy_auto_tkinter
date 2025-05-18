@@ -7,6 +7,7 @@ def run():
     init_db()
     session = SessionLocal()
     root = tk.Tk()
+    root.state("zoomed")
     root.configure(background="#111")
     app = MainWindow(root)
     apply_custom_style()

@@ -5,13 +5,13 @@ from denjyauto.database import add_car_to_client, get_all_clients
 class AddCarForm:
     def __init__(self, parent, client):
         self.window = tk.Toplevel(parent)
-        self.window.title("Добавяне на нова кола към клиент")
+        self.window.title("Добавяне на нова автомобил към клиент")
         self.window.geometry("500x500")
         self.window.configure(bg="#111")
         self.window.grab_set()  # Прави прозореца модален
         self.client = client
 
-        ttk.Label(self.window, text=f"Въведете данни за колата на клиент: {self.client.name}", foreground="red").pack(pady=20)
+        ttk.Label(self.window, text=f"Въведете данни за автомобила на клиент: {self.client.name}", foreground="red").pack(pady=20)
 
         ttk.Label(self.window, text="Регистрационен номер:").pack()
         self.license_plate_entry = ttk.Entry(self.window)
@@ -33,7 +33,7 @@ class AddCarForm:
         self.year_entry = ttk.Entry(self.window)
         self.year_entry.pack(pady=10)
 
-        ttk.Button(self.window, text="Добави кола", command=self.add_car).pack(pady=20)
+        ttk.Button(self.window, text="Добави автомобил", command=self.add_car).pack(pady=20)
 
     def get_clients_for_combobox(self):
         clients = get_all_clients()
@@ -59,4 +59,4 @@ class AddCarForm:
             else:
                 print("Попълнете всички полета.")
         except Exception as e:
-            print(f"Грешка при добавяне на кола: {e}")
+            print(f"Грешка при добавяне на автомобил: {e}")

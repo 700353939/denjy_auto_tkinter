@@ -14,4 +14,5 @@ class Car(Base):
     client_id = Column(Integer, ForeignKey("client.id"))
 
     client = relationship("Client", back_populates="cars")
-    repairs = relationship("Repair", back_populates="car")
+    repairs = relationship("Repair", back_populates="car", cascade="all, delete")
+
