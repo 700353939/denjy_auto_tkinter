@@ -50,10 +50,10 @@ class NewClientForm(tk.Toplevel):
             session.flush()  # За да получим client.id преди да commit-нем
 
             car = Car(
-                registration_number=self.reg_number_entry.get(),
-                vin=self.vin_entry.get(),
-                brand=self.brand_entry.get(),
-                model=self.model_entry.get(),
+                registration_number=self.reg_number_entry.get().upper(),
+                vin=self.vin_entry.get().upper(),
+                brand=self.brand_entry.get().capitalize(),
+                model=self.model_entry.get().capitalize(),
                 year=int(self.year_entry.get()),
                 client_id=client.id
             )

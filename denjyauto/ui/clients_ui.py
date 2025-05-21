@@ -65,7 +65,6 @@ def load_clients(master, content_frame):
                 text="ИЗТРИЙ КЛИЕНТ",
                 style="RedText.TButton",
                 command=lambda cl=client: delete_client(
-                    master,
                     cl,
                     reload_callback=lambda: load_clients(master, content_frame))
             ).pack(side="left", padx=10)
@@ -90,7 +89,7 @@ def show_client_details(master, content_frame, client):
     ttk.Label(client_frame, text=f"Име: {client.name}").pack(padx=10, pady=5)
     ttk.Label(client_frame, text=f"Телефон: {client.phone_number}").pack(padx=10, pady=5)
 
-def delete_client(master, client, reload_callback=None):
+def delete_client(client, reload_callback=None):
     confirm = messagebox.askyesno("Потвърждение",
                                   f"Сигурен ли си, че искаш да изтриеш клиента '{client.name}' и всички свързани данни?")
     if not confirm:

@@ -19,10 +19,10 @@ def add_car_to_client(client_id, license_plate, vin, brand, model, year):
     try:
         car = Car(
             client_id=client_id,
-            registration_number=license_plate,
-            vin=vin,
-            brand=brand,
-            model=model,
+            registration_number=license_plate.upper(),
+            vin=vin.upper(),
+            brand=brand.capitalize(),
+            model=model.capitalize(),
             year=year
         )
         session.add(car)
