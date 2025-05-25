@@ -64,7 +64,7 @@ def show_car_details(master, car, client_name):
                 ttk.Button(
                     repairs_frame,
                     text=f"Ремонт: {repair.repair_date}",
-                    command=lambda r=repair: show_repair_details(master, r)
+                    command=lambda r=repair: show_repair_details(master, r, car, client_name)
                 ).grid(row=row, column=column, padx=5, pady=5, sticky="w")
 
     finally:
@@ -96,7 +96,7 @@ def delete_car(car, reload_callback=None):
         session.close()
 
 
-def show_repair_details(master, repair):
+def show_repair_details(master, repair, car, client_name):
     win = tk.Toplevel(master)
     win.configure(bg="#111")
     win.title(f"ДАТА НА РЕМОНТА: {repair.repair_date}")
@@ -117,14 +117,31 @@ def show_repair_details(master, repair):
 
     ttk.Button(
         repair_buttons_frame,
-        text="ИЗТРИЙ АВТОМОБИЛА",
+        text="ИЗТРИЙ РЕМОНТА",
         style="RedText.TButton",
-        command=lambda r=repair: delete_repair(r)
+        command=lambda r=repair: delete_repair(r, reload_callback=lambda: show_car_details(master, car, client_name))
     ).pack(side="left", pady=10, padx=10)
 
 
 def edit_repair(master, repair):
     EditRepairForm(master, repair)
 
-def delete_repair(repair):
-    pass
+def delete_repair(repair, reload_callback=None):
+    confirm = messagebox.askyesno("Потвърждение",
+                                  f"Сигурен ли си, че искаш да изтриеш ремонта на дата '{repair.repair_date}'?")
+    if not confirm:
+        return
+
+    session: Session = SessionLocal()
+    try:
+        repair = session.query(Repair).get(repair.id)
+        session.delete(repair)
+        session.commit()
+        messagebox.showinfo("Успех", f"Ремонтът е изтрит.")
+        if reload_callback:
+            reload_callback()
+    except Exception as e:
+        session.rollback()
+        messagebox.showerror("Грешка", f"Неуспешно изтриване: {e}")
+    finally:
+        session.close()

@@ -46,7 +46,6 @@ class AddCarForm:
     def add_car(self):
         try:
             selected_client_id = self.client.id
-            print("Избрано клиентско ID:", selected_client_id)
             license_plate = self.license_plate_entry.get()
             vin = self.vin_entry.get()
             brand = self.brand_entry.get()
