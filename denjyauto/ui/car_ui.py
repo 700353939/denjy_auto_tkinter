@@ -5,6 +5,7 @@ from denjyauto.database import SessionLocal
 from denjyauto.forms.add_car_form import AddCarForm
 from denjyauto.forms.add_repair_form import AddRepairForm
 from denjyauto.forms.edit_car_form import EditCarForm
+from denjyauto.forms.edit_repair_form import EditRepairForm
 from denjyauto.models.car import Car
 from denjyauto.models.repair import Repair
 from denjyauto.ui.widgets import create_copyable_label, create_scrollable_frame
@@ -25,24 +26,24 @@ def show_car_details(master, car, client_name):
     create_copyable_label(win, text=f"Модел: {car.model}")
     create_copyable_label(win, text=f"Година: {car.year}")
 
-    cars_frame = ttk.Frame(win, padding=10 )
-    cars_frame.pack(side="top", fill="y", pady=5)
+    car_buttons_frame = ttk.Frame(win, padding=10 )
+    car_buttons_frame.pack(side="top", fill="y", pady=5)
 
     ttk.Button(
-        cars_frame,
+        car_buttons_frame,
         text="ДОБАВИ РЕМОНТ",
         command=lambda: AddRepairForm(win, car)
     ).pack(side="left", pady=10, padx=10)
 
     ttk.Button(
-        cars_frame,
+        car_buttons_frame,
         text="РЕДАКТИРАЙ АВТОМОБИЛА",
         style="RedText.TButton",
         command=lambda c=car: edit_car(master, c, client_name)
     ).pack(side="left", pady=10, padx=10)
 
     ttk.Button(
-        cars_frame,
+        car_buttons_frame,
         text="ИЗТРИЙ АВТОМОБИЛА",
         style="RedText.TButton",
         command=lambda c=car: delete_car(c)
@@ -104,10 +105,26 @@ def show_repair_details(master, repair):
     ttk.Label(win, text=f"БЕЛЕЖКИ: {repair.repair_notes}").pack(padx=10, pady=5)
     ttk.Label(win, text=f"ЦЕНА НА РЕМОНТА: {repair.repair_price}").pack(padx=10, pady=5)
 
+    repair_buttons_frame = ttk.Frame(win, padding=10 )
+    repair_buttons_frame.pack(side="top", fill="y", pady=5)
 
-def edit_repair():
-    pass
+    ttk.Button(
+        repair_buttons_frame,
+        text="РЕДАКТИРАЙ РЕМОНТА",
+        style="RedText.TButton",
+        command=lambda r=repair: edit_repair(master, r)
+    ).pack(side="left", pady=10, padx=10)
+
+    ttk.Button(
+        repair_buttons_frame,
+        text="ИЗТРИЙ АВТОМОБИЛА",
+        style="RedText.TButton",
+        command=lambda r=repair: delete_repair(r)
+    ).pack(side="left", pady=10, padx=10)
 
 
-def delete_repair():
+def edit_repair(master, repair):
+    EditRepairForm(master, repair)
+
+def delete_repair(repair):
     pass
