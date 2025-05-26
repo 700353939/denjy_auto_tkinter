@@ -14,19 +14,21 @@ class MainWindow:
         self.logo_image = tk.PhotoImage(file="images/denjyauto.gif")
 
         self.start_frame = ttk.Frame(master)
-        self.start_frame.pack(side="top", anchor="nw", fill="y", pady=5)
+        self.start_frame.pack()
+
+
+
+        self.refresh_button = ttk.Button(self.start_frame, text="ОБНОВИ СПИСЪКА", command=lambda: load_clients(master, self.content_frame))
+        self.refresh_button.pack(side="left", pady=10, padx=50,  fill="x", expand=True)
 
         self.logo = ttk.Label(self.start_frame, image=self.logo_image, font=("Arial", 16), foreground="red")
-        self.logo.pack(side="left", pady=10, padx=50)
+        self.logo.pack(side="left", anchor="center", pady=10, padx=50)
 
-        self.refresh_button = ttk.Button(self.start_frame, text="    ОБНОВИ СПИСЪКА    ", command=lambda: load_clients(master, self.content_frame))
-        self.refresh_button.pack(side="left", pady=10, padx=50)
+        self.new_client_button = ttk.Button(self.start_frame, text="НОВ КЛИЕНТ", command=lambda: open_new_client_form(master))
+        self.new_client_button.pack(side="left", pady=10, padx=10,  fill="x", expand=True)
 
-        self.new_client_button = ttk.Button(self.start_frame, text="    НОВ КЛИЕНТ    ", command=lambda: open_new_client_form(master))
-        self.new_client_button.pack(side="left", pady=10, padx=50)
-
-        self.profit_button = ttk.Button(self.start_frame, text="    ПРИХОД    ", command=lambda: income(master))
-        self.profit_button.pack(side="left", pady=10, padx=50)
+        self.profit_button = ttk.Button(self.start_frame, text="ПРИХОД", command=lambda: income(master))
+        self.profit_button.pack(side="left", pady=10, padx=10, fill="x", expand=True)
 
         self.content_frame = create_scrollable_frame(master, scroll="both")
 

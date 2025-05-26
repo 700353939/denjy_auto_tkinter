@@ -1,5 +1,5 @@
 from tkinter import ttk, messagebox
-from sqlalchemy.orm import Session, backref
+from sqlalchemy.orm import Session
 from denjyauto.database import SessionLocal
 from denjyauto.forms.edit_client_form import EditClientForm
 from denjyauto.forms.new_client_form import NewClientForm
@@ -30,21 +30,21 @@ def load_clients(master, content_frame):
             ttk.Button(
                 client_frame,
                 text="ДОБАВИ АВТОМОБИЛ",
-                style="RedText.TButton",
+                style="TButton",
                 command=lambda c=client: add_new_car_to_client(master, c)
             ).pack(side="left", padx=10, pady=5)
 
             ttk.Button(
                 client_frame,
                 text="РЕДАКТИРАЙ КЛИЕНТ",
-                style="RedText.TButton",
+                style="TButton",
                 command=lambda cl=client: edit_client(master, cl, content_frame)
             ).pack(side="left", padx=10, pady=5)
 
             ttk.Button(
                 client_frame,
                 text="ИЗТРИЙ КЛИЕНТ",
-                style="RedText.TButton",
+                style="TButton",
                 command=lambda cl=client: delete_client(
                     cl,
                     reload_callback=lambda: load_clients(master, content_frame))
@@ -60,9 +60,7 @@ def load_clients(master, content_frame):
             if not cars:
                 ttk.Label(client_frame, text="Няма регистрирани автомобили.").pack(anchor="w", padx=20)
             else:
-                for i, car in enumerate(cars):
-                    row = i // 5
-                    column = i % 5
+                for car in cars:
                     ttk.Button(
                         cars_frame,
                         text=f"{car.registration_number}",
@@ -91,8 +89,9 @@ def show_client_details(master, content_frame, client):
     ttk.Label(client_frame, text=f"Телефон: {client.phone_number}").pack(padx=10, pady=5)
 
 def delete_client(client, reload_callback=None):
-    confirm = messagebox.askyesno("Потвърждение",
-                                  f"Сигурен ли си, че искаш да изтриеш клиента '{client.name}' и всички свързани данни?")
+    confirm = messagebox.askyesno(
+        "Потвърждение",
+        f"Сигурен ли си, че искаш да изтриеш клиента '{client.name}' и всички свързани данни?")
     if not confirm:
         return
 

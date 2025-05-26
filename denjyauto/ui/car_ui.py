@@ -38,14 +38,14 @@ def show_car_details(master, car, client_name):
     ttk.Button(
         car_buttons_frame,
         text="РЕДАКТИРАЙ АВТОМОБИЛА",
-        style="RedText.TButton",
+        style="TButton",
         command=lambda c=car: edit_car(master, c, client_name)
     ).pack(side="left", pady=10, padx=10)
 
     ttk.Button(
         car_buttons_frame,
         text="ИЗТРИЙ АВТОМОБИЛА",
-        style="RedText.TButton",
+        style="TButton",
         command=lambda c=car: delete_car(c)
     ).pack(side="left", pady=10, padx=10)
 
@@ -111,14 +111,14 @@ def show_repair_details(master, repair, car, client_name):
     ttk.Button(
         repair_buttons_frame,
         text="РЕДАКТИРАЙ РЕМОНТА",
-        style="RedText.TButton",
+        style="TButton",
         command=lambda r=repair: edit_repair(master, r)
     ).pack(side="left", pady=10, padx=10)
 
     ttk.Button(
         repair_buttons_frame,
         text="ИЗТРИЙ РЕМОНТА",
-        style="RedText.TButton",
+        style="TButton",
         command=lambda r=repair: delete_repair(r, reload_callback=lambda: show_car_details(master, car, client_name))
     ).pack(side="left", pady=10, padx=10)
 
