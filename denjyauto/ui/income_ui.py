@@ -14,11 +14,11 @@ def income(master):
 
     ttk.Label(win, text="От дата (гггг-мм-дд):").pack()
     start_date_var = tk.StringVar(value=str(datetime.today().date()))
-    ttk.Entry(win, textvariable=start_date_var, foreground="blue").pack()
+    ttk.Entry(win, textvariable=start_date_var, foreground="dodger blue").pack()
 
     ttk.Label(win, text="До дата (гггг-мм-дд):").pack()
     end_date_var = tk.StringVar(value=str(datetime.today().date()))
-    ttk.Entry(win, textvariable=end_date_var, foreground="blue").pack(padx=10, pady=5)
+    ttk.Entry(win, textvariable=end_date_var, foreground="dodger blue").pack(padx=10, pady=5)
 
 
     def calculate_income():
@@ -38,7 +38,7 @@ def income(master):
                 .all()
             )
             total = sum([r[0] for r in total_income if r[0] is not None])
-            result_label.config(text=f"Общо: {total:.2f} лв.", foreground="blue")
+            result_label.config(text=f"Общо: {total:.2f} лв.", foreground="red")
         finally:
             session.close()
 

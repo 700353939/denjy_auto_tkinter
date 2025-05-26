@@ -17,7 +17,7 @@ class NewClientForm(tk.Toplevel):
         # Client model
         self.name_entry = self._create_labeled_entry("Име на клиент")
         self.phone_entry = self._create_labeled_entry("Телефон")
-        ttk.Label(self, text="Бележки:", foreground="blue").pack()
+        ttk.Label(self, text="Бележки:", foreground="dodger blue").pack()
         self.notes_text = tk.Text(self, height=3, background="gray70", foreground="black", insertbackground="black")
         self.notes_text.pack()
 
@@ -32,7 +32,7 @@ class NewClientForm(tk.Toplevel):
         save_button.pack(pady=10)
 
     def _create_labeled_entry(self, label_text):
-        label = ttk.Label(self, text=label_text, foreground="blue")
+        label = ttk.Label(self, text=label_text, foreground="dodger blue")
         label.pack()
         entry = ttk.Entry(self)
         entry.pack()

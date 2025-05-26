@@ -23,17 +23,17 @@ class EditCarForm(tk.Toplevel):
         self.vin_entry = ttk.Entry(self, textvariable=self.vin_var)
         self.vin_entry.pack(pady=5, fill="x", padx=10)
 
-        ttk.Label(self, text="VIN:", background="gray80", foreground="black").pack(pady=5)
+        ttk.Label(self, text="Марка:", background="gray80", foreground="black").pack(pady=5)
         self.brand_var = tk.StringVar(value=car.brand)
         self.brand_entry = ttk.Entry(self, textvariable=self.brand_var)
         self.brand_entry.pack(pady=5, fill="x", padx=10)
 
-        ttk.Label(self, text="VIN:", background="gray80", foreground="black").pack(pady=5)
+        ttk.Label(self, text="Модел:", background="gray80", foreground="black").pack(pady=5)
         self.model_var = tk.StringVar(value=car.model)
         self.model_entry = ttk.Entry(self, textvariable=self.model_var)
         self.model_entry.pack(pady=5, fill="x", padx=10)
 
-        ttk.Label(self, text="VIN:", background="gray80", foreground="black").pack(pady=5)
+        ttk.Label(self, text="Година:", background="gray80", foreground="black").pack(pady=5)
         self.year_var = tk.IntVar(value=car.year)
         self.year_entry = ttk.Entry(self, textvariable=self.year_var)
         self.year_entry.pack(pady=5, fill="x", padx=10)

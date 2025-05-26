@@ -11,7 +11,7 @@ class AddCarForm:
         self.window.grab_set()  # Прави прозореца модален
         self.client = client
 
-        ttk.Label(self.window, text=f"Въведете данни за автомобила на клиент: {self.client.name}", foreground="blue").pack(pady=20)
+        ttk.Label(self.window, text=f"Въведете данни за автомобила на клиент: {self.client.name}", foreground="dodger blue").pack(pady=20)
 
         ttk.Label(self.window, text="Регистрационен номер:").pack()
         self.license_plate_entry = ttk.Entry(self.window)

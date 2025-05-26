@@ -59,7 +59,7 @@ def create_scrollable_frame(parent, scroll="vertical", use_ttk=True, style_name=
     return scrollable_frame
 
 def create_copyable_label(parent, text):
-    entry = tk.Entry(parent, readonlybackground="gray80", foreground="blue")
+    entry = tk.Entry(parent, readonlybackground="gray80", foreground="dodger blue")
     entry.insert(0, text)
     entry.config(state='readonly')
     entry.pack(padx=10, pady=5, fill="x")
