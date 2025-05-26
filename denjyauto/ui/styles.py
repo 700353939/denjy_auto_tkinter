@@ -5,45 +5,45 @@ def apply_custom_style():
     style.theme_use("default")
 
     # Универсален стил за всички ttk widgets
-    style.configure(".", background="#111", foreground="white", font=("Monospace", 10))
+    style.configure(".", background="gray80", foreground="black", font=("Monospace", 10, "bold"))
 
     # Frame и LabelFrame
-    style.configure("TFrame", background="#111")
-    style.configure("TLabelframe", background="#111", foreground="white")
-    style.configure("TLabelframe.Label", background="#111", foreground="red", font=("Monospace", 10, "bold"))
+    style.configure("TFrame", background="gray80")
+    style.configure("TLabelframe", background="gray80", foreground="black")
+    style.configure("TLabelframe.Label", background="gray80", foreground="blue", font=("Monospace", 10, "bold"))
 
     # Label
-    style.configure("TLabel", background="#111", foreground="white")
+    style.configure("TLabel", background="gray80", foreground="black")
 
     # Button
-    style.configure("TButton", background="#222", foreground="white", padding=6, relief="flat")
+    style.configure("TButton", background="gray60", foreground="black", padding=6, relief="flat")
     style.map("TButton",
-              background=[("active", "#444"), ("pressed", "#000")],
-              foreground=[("active", "red"), ("pressed", "white")])
+              background=[("active", "white"), ("pressed", "white")],
+              foreground=[("active", "blue"), ("pressed", "black")])
 
     # Entry
-    style.configure("TEntry", fieldbackground="#111", foreground="white", insertcolor="white")
+    style.configure("TEntry", fieldbackground="gray80", foreground="black", insertcolor="black")
 
     # Text widget
     ttk.Entry.configure = lambda *a, **kw: None  # предотвратява грешка при monkey patch (за съвместимост)
 
     # Treeview
-    style.configure("Treeview", background="#222", foreground="white",
-                    fieldbackground="#222", borderwidth=0)
-    style.configure("Treeview.Heading", background="#333", foreground="white", font=("Monospace", 10, "bold"))
-    style.map("Treeview", background=[("selected", "#555")])
+    style.configure("Treeview", background="gray70", foreground="black",
+                    fieldbackground="#gray70", borderwidth=0)
+    style.configure("Treeview.Heading", background="gray70", foreground="black", font=("Monospace", 10, "bold"))
+    style.map("Treeview", background=[("selected", "gray60")])
 
     # Scrollbar
-    style.configure("Scrollbar", background="#111", troughcolor="white", arrowcolor="red")
+    style.configure("Scrollbar", background="gray80", troughcolor="black", arrowcolor="blue")
 
     style.configure("TCheckbutton",
-                    background="#111",
-                    foreground="white",
+                    background="gray80",
+                    foreground="black",
                     font=("Monospace", 10),
                     )
 
     style.map("TCheckbutton",
-              foreground=[("active", "red"), ("selected", "red")],
-              indicatorcolor=[("active", "red"), ("selected", "red")],
-              background=[("active", "#111")]
+              foreground=[("active", "blue"), ("selected", "blue")],
+              indicatorcolor=[("active", "blue"), ("selected", "blue")],
+              background=[("active", "gray80")]
               )

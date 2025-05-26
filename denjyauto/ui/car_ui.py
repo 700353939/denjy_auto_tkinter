@@ -17,7 +17,7 @@ def show_car_details(master, car, client_name):
 
     win = tk.Toplevel(master)
     win.title(f"Клиент: {client_name}, автомобил: {car.registration_number}")
-    win.configure(background="#111")
+    win.configure(background="gray80")
     win.geometry("600x600")
 
     create_copyable_label(win, text=f"Рег. номер: {car.registration_number}")
@@ -98,7 +98,7 @@ def delete_car(car, reload_callback=None):
 
 def show_repair_details(master, repair, car, client_name):
     win = tk.Toplevel(master)
-    win.configure(bg="#111")
+    win.configure(bg="gray80")
     win.title(f"ДАТА НА РЕМОНТА: {repair.repair_date}")
     ttk.Label(win, text=f"КИЛОМЕТРИ ПРИ РЕМОНТА: {repair.repair_km}").pack(padx=10, pady=5)
     ttk.Label(win, text=f"РЕМОНТИ: \n{repair.repairs_type_field}").pack(padx=10, pady=5)

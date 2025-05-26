@@ -11,29 +11,29 @@ class EditCarForm(tk.Toplevel):
         self.reload_callback = reload_callback
         self.title("Редакция на автомобил")
         self.geometry("400x400")
-        self.configure(bg="#111")
+        self.configure(bg="gray80")
 
-        ttk.Label(self, text="Регистрационен номер:", background="#111", foreground="white").pack(pady=5)
+        ttk.Label(self, text="Регистрационен номер:", background="gray80", foreground="black").pack(pady=5)
         self.registration_number_var = tk.StringVar(value=car.registration_number)
         self.registration_number_entry = ttk.Entry(self, textvariable=self.registration_number_var)
         self.registration_number_entry.pack(pady=5, fill="x", padx=10)
 
-        ttk.Label(self, text="VIN:", background="#111", foreground="white").pack(pady=5)
+        ttk.Label(self, text="VIN:", background="gray80", foreground="black").pack(pady=5)
         self.vin_var = tk.StringVar(value=car.vin)
         self.vin_entry = ttk.Entry(self, textvariable=self.vin_var)
         self.vin_entry.pack(pady=5, fill="x", padx=10)
 
-        ttk.Label(self, text="VIN:", background="#111", foreground="white").pack(pady=5)
+        ttk.Label(self, text="VIN:", background="gray80", foreground="black").pack(pady=5)
         self.brand_var = tk.StringVar(value=car.brand)
         self.brand_entry = ttk.Entry(self, textvariable=self.brand_var)
         self.brand_entry.pack(pady=5, fill="x", padx=10)
 
-        ttk.Label(self, text="VIN:", background="#111", foreground="white").pack(pady=5)
+        ttk.Label(self, text="VIN:", background="gray80", foreground="black").pack(pady=5)
         self.model_var = tk.StringVar(value=car.model)
         self.model_entry = ttk.Entry(self, textvariable=self.model_var)
         self.model_entry.pack(pady=5, fill="x", padx=10)
 
-        ttk.Label(self, text="VIN:", background="#111", foreground="white").pack(pady=5)
+        ttk.Label(self, text="VIN:", background="gray80", foreground="black").pack(pady=5)
         self.year_var = tk.IntVar(value=car.year)
         self.year_entry = ttk.Entry(self, textvariable=self.year_var)
         self.year_entry.pack(pady=5, fill="x", padx=10)

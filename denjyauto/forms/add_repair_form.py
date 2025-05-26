@@ -20,7 +20,7 @@ class AddRepairForm(tk.Toplevel):
         self.title("Добавяне на ремонт")
         self.car = car
         self.geometry("600x600")
-        self.configure(bg="#111")
+        self.configure(bg="gray80")
 
         ttk.Label(self, text=f"Автомобил: {car.registration_number}", font=("Arial", 12, "bold"), foreground="red").pack(pady=5)
 

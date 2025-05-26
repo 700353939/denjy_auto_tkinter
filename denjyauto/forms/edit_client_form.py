@@ -11,20 +11,20 @@ class EditClientForm(tk.Toplevel):
         self.reload_callback = reload_callback
         self.title("Редакция на клиент")
         self.geometry("400x400")
-        self.configure(bg="#111")
+        self.configure(bg="gray80")
 
-        ttk.Label(self, text="Име на клиента:", background="#111", foreground="white").pack(pady=5)
+        ttk.Label(self, text="Име на клиента:", background="gray80", foreground="black").pack(pady=5)
         self.name_var = tk.StringVar(value=client.name)
         self.name_entry = ttk.Entry(self, textvariable=self.name_var)
         self.name_entry.pack(pady=5, fill="x", padx=10)
 
-        ttk.Label(self, text="Телефон:", background="#111", foreground="white").pack(pady=5)
+        ttk.Label(self, text="Телефон:", background="gray80", foreground="black").pack(pady=5)
         self.phone_var = tk.StringVar(value=client.phone_number)
         self.phone_entry = ttk.Entry(self, textvariable=self.phone_var)
         self.phone_entry.pack(pady=5, fill="x", padx=10)
 
-        ttk.Label(self, text="Бележки:", background="#111", foreground="white").pack(pady=5)
-        self.notes_text = tk.Text(self, height=6, bg="#222", fg="white", insertbackground="white")
+        ttk.Label(self, text="Бележки:", background="gray80", foreground="black").pack(pady=5)
+        self.notes_text = tk.Text(self, height=6, bg="gray70", fg="black", insertbackground="black")
         self.notes_text.pack(pady=5, fill="both", expand=True, padx=10)
         if client.client_notes:
             self.notes_text.insert("1.0", client.client_notes)

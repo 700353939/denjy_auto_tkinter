@@ -8,9 +8,10 @@ def run():
     session = SessionLocal()
     root = tk.Tk()
     root.state("zoomed")
-    root.configure(background="#111")
+    root.configure(background="gray80")
     app = MainWindow(root)
     apply_custom_style()
+    root.iconphoto(False, tk.PhotoImage(file="images/denjyauto.gif"))
     root.mainloop()
 
 if __name__ == '__main__':
