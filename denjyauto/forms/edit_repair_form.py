@@ -10,7 +10,7 @@ class EditRepairForm(tk.Toplevel):
         super().__init__(master)
         self.repair = repair
         self.title("Редакция на ремонт")
-        self.geometry("400x400")
+        self.geometry("400x500")
         self.configure(bg="#111")
 
         ttk.Label(self, text="Дата на ремонта:", background="#111", foreground="white").pack(pady=5)
