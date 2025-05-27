@@ -45,7 +45,7 @@ def show_car_details(master, car, client_name):
     ttk.Button(
         car_buttons_frame,
         text="ИЗТРИЙ АВТОМОБИЛА",
-        style="TButton",
+        style="RedText.TButton",
         command=lambda c=car: delete_car(c)
     ).pack(side="left", pady=10, padx=10)
 
@@ -100,6 +100,7 @@ def show_repair_details(master, repair, car, client_name):
     win = tk.Toplevel(master)
     win.configure(bg="gray80")
     win.title(f"ДАТА НА РЕМОНТА: {repair.repair_date}")
+
     ttk.Label(win, text=f"КИЛОМЕТРИ ПРИ РЕМОНТА: {repair.repair_km}").pack(padx=10, pady=5)
     ttk.Label(win, text=f"РЕМОНТИ: \n{repair.repairs_type_field}").pack(padx=10, pady=5)
     ttk.Label(win, text=f"БЕЛЕЖКИ: {repair.repair_notes}").pack(padx=10, pady=5)
@@ -118,7 +119,7 @@ def show_repair_details(master, repair, car, client_name):
     ttk.Button(
         repair_buttons_frame,
         text="ИЗТРИЙ РЕМОНТА",
-        style="TButton",
+        style="RedText.TButton",
         command=lambda r=repair: delete_repair(r, reload_callback=lambda: show_car_details(master, car, client_name))
     ).pack(side="left", pady=10, padx=10)
 

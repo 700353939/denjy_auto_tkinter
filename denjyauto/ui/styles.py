@@ -21,6 +21,11 @@ def apply_custom_style():
               background=[("active", "white"), ("pressed", "white")],
               foreground=[("active", "dodger blue"), ("pressed", "black")])
 
+    style.configure("RedText.TButton", background="gray60", foreground="red", padding=6, relief="flat", font=("Monospace", 10))
+    style.map("RedText.TButton",
+              background=[("active", "white"), ("pressed", "white")],
+              foreground=[("active", "red"), ("pressed", "black")])
+
     # Entry
     style.configure("TEntry", fieldbackground="gray80", foreground="black", insertcolor="black")
 
