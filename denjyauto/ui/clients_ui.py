@@ -32,14 +32,14 @@ def load_clients(master, content_frame):
                 client_frame,
                 text="ДЕТАЙЛИ",
                 style="TButton",
-                command=lambda c=client: show_client_details(master, c, content_frame)
+                command=lambda c=client: show_client_details(master, c.id, content_frame)
             ).pack(side="left", padx=10, pady=5)
 
             ttk.Button(
                 client_frame,
                 text="РЕДАКТИРАЙ КЛИЕНТ",
                 style="TButton",
-                command=lambda cl=client: edit_client(master, cl, content_frame)
+                command=lambda cl=client: edit_client(master, cl.id, content_frame)
             ).pack(side="left", padx=10, pady=5)
 
             ttk.Button(
@@ -55,7 +55,7 @@ def load_clients(master, content_frame):
                 client_frame,
                 text="ДОБАВИ АВТОМОБИЛ",
                 style="TButton",
-                command=lambda c=client: add_new_car_to_client(master, c)
+                command=lambda c=client: add_new_car_to_client(master, c.id)
             ).pack(side="left", padx=10, pady=5)
 
             cars_frame = ttk.LabelFrame(
@@ -72,7 +72,7 @@ def load_clients(master, content_frame):
                     ttk.Button(
                         cars_frame,
                         text=f"{car.registration_number}",
-                        command=lambda cl_name=client_name, c=car: show_car_details(master, c, cl_name)
+                        command=lambda cl_name=client_name, c=car: show_car_details(master, c.id, cl_name)
                     ).pack(side="left", padx=10, pady=5)
 
 
@@ -84,64 +84,78 @@ def add_new_client(master, content_frame):
         load_clients(master, content_frame)
     NewClientForm(master, on_client_added)
 
-def edit_client(master, client, content_frame):
-    EditClientForm(master, client, reload_callback=lambda: load_clients(master, content_frame))
-
-    load_clients(master, content_frame)
-
-def show_client_details(master, client, content_frame):
+def edit_client(master, client_id, content_frame):
     session: Session = SessionLocal()
+    try:
+        client = session.query(Client).get(client_id)
+        if not client:
+            messagebox.showerror("Грешка", "Клиентът не е намерен.")
+            return
 
-    win = tk.Toplevel(master)
-    win.configure(bg="gray80")
-    win.geometry("600x600")
+        EditClientForm(master, client, reload_callback=lambda: show_client_details(master, client_id, content_frame))
 
-    ttk.Label(win, text=f"Име: {client.name}").pack(padx=10, pady=5)
-    ttk.Label(win, text=f"Телефон: {client.phone_number}").pack(padx=10, pady=5)
-    ttk.Label(win, text=f"Бележки: {client.client_notes}").pack(padx=10, pady=5)
+    finally:
+        session.close()
 
-    client_buttons_frame = ttk.LabelFrame(win, padding=10 )
-    client_buttons_frame.pack(side="top", fill="y", pady=5)
+def show_client_details(master, client_id, content_frame):
+    session: Session = SessionLocal()
+    try:
+        client = session.query(Client).get(client_id)
+        if not client:
+            messagebox.showerror("Грешка", "Клиентът не е намерен.")
+            return
 
-    ttk.Button(
-        client_buttons_frame,
-        text="РЕДАКТИРАЙ КЛИЕНТ",
-        style="TButton",
-        command=lambda cl=client: edit_client(master, cl, content_frame)
-    ).pack(side="left", padx=10, pady=5)
+        win = tk.Toplevel(master)
+        win.configure(bg="gray80")
+        win.geometry("600x600")
 
-    ttk.Button(
-        client_buttons_frame,
-        text="ИЗТРИЙ КЛИЕНТ",
-        style="RedText.TButton",
-        command=lambda cl=client: delete_client(
-            cl,
-            reload_callback=lambda: load_clients(master, content_frame))
-    ).pack(side="left", padx=10, pady=5)
+        ttk.Label(win, text=f"Име: {client.name}").pack(padx=10, pady=5)
+        ttk.Label(win, text=f"Телефон: {client.phone_number}").pack(padx=10, pady=5)
+        ttk.Label(win, text=f"Бележки: {client.client_notes}").pack(padx=10, pady=5)
 
-    ttk.Button(
-        client_buttons_frame,
-        text="ДОБАВИ АВТОМОБИЛ",
-        style="TButton",
-        command=lambda c=client: add_new_car_to_client(master, c)
-    ).pack(side="left", padx=10, pady=5)
+        client_buttons_frame = ttk.LabelFrame(win, padding=10 )
+        client_buttons_frame.pack(side="top", fill="y", pady=5)
 
-    cars_frame = create_scrollable_frame(win)
+        ttk.Button(
+            client_buttons_frame,
+            text="РЕДАКТИРАЙ КЛИЕНТ",
+            style="TButton",
+            command=lambda cl=client: edit_client(master, cl.id, content_frame)
+        ).pack(side="left", padx=10, pady=5)
 
-    cars = session.query(Car).filter_by(client_id=client.id).order_by(Car.id.desc()).all()
-    if not cars:
-        ttk.Label(cars_frame, text="Няма регистрирани автомобили.").pack(anchor="w", padx=20)
-    else:
-        try:
-            for car in cars:
+        ttk.Button(
+            client_buttons_frame,
+            text="ИЗТРИЙ КЛИЕНТ",
+            style="RedText.TButton",
+            command=lambda cl=client: delete_client(
+                cl,
+                reload_callback=lambda: load_clients(master, content_frame))
+        ).pack(side="left", padx=10, pady=5)
+
+        ttk.Button(
+            client_buttons_frame,
+            text="ДОБАВИ АВТОМОБИЛ",
+            style="TButton",
+            command=lambda c=client: add_new_car_to_client(master, c.id)
+        ).pack(side="left", padx=10, pady=5)
+
+        cars_frame = create_scrollable_frame(win)
+
+        cars = session.query(Car).filter_by(client_id=client.id).order_by(Car.id.desc()).all()
+        if not cars:
+            ttk.Label(cars_frame, text="Няма регистрирани автомобили.").pack(anchor="w", padx=20)
+        else:
+            for i, car in enumerate(cars):
+                row = i // 4
+                column = i % 4
                 ttk.Button(
                     cars_frame,
                     text=f"{car.registration_number}",
-                    command=lambda cl_name=client.name, c=car: show_car_details(master, c, cl_name)
-                ).pack(side="left", padx=10, pady=5)
+                    command=lambda cl_name=client.name, c=car: show_car_details(master, c.id, cl_name)
+                ).grid(row=row, column=column, padx=5, pady=5, sticky="w")
 
-        finally:
-            session.close()
+    finally:
+        session.close()
 
 def delete_client(client, reload_callback=None):
     confirm = messagebox.askyesno(
