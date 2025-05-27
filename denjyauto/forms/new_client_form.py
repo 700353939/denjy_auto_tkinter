@@ -8,11 +8,12 @@ from denjyauto.models.car import Car
 Session = sessionmaker(bind=engine)
 
 class NewClientForm(tk.Toplevel):
-    def __init__(self, master):
+    def __init__(self, master, on_client_added_callback):
         super().__init__(master)
         self.title("Нов клиент и автомобил")
         self.geometry("400x400")
         self.configure(bg="gray80")
+        self.on_client_added_callback = on_client_added_callback
 
         # Client model
         self.name_entry = self._create_labeled_entry("Име на клиент")
@@ -61,6 +62,8 @@ class NewClientForm(tk.Toplevel):
 
             session.commit()
             messagebox.showinfo("Успех", "Клиентът и автомобила са записани.")
+
+            self.on_client_added_callback()
             self.destroy()
         except Exception as e:
             session.rollback()

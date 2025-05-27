@@ -79,8 +79,10 @@ def load_clients(master, content_frame):
     finally:
         session.close()
 
-def open_new_client_form(master):
-    NewClientForm(master)
+def add_new_client(master, content_frame):
+    def on_client_added():
+        load_clients(master, content_frame)
+    NewClientForm(master, on_client_added)
 
 def edit_client(master, client, content_frame):
     EditClientForm(master, client, reload_callback=lambda: load_clients(master, content_frame))
