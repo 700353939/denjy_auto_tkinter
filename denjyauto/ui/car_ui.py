@@ -54,7 +54,7 @@ def show_car_details(master, car, client_name):
 
     session: Session = SessionLocal()
     try:
-        repairs = session.query(Repair).filter_by(car_id=car.id).all()
+        repairs = session.query(Repair).filter_by(car_id=car.id).order_by(Repair.repair_date.desc()).all()
         if not repairs:
             ttk.Label(repairs_frame, text="Няма регистрирани ремонти.").grid(row=0, column=0, sticky="w")
         else:

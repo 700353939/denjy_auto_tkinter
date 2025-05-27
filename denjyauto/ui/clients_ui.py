@@ -15,7 +15,7 @@ def load_clients(master, content_frame):
     session: Session = SessionLocal()
 
     try:
-        clients = session.query(Client).all()
+        clients = session.query(Client).order_by(Client.id.desc()).all()
         for client in clients:
             client_name = client.name
             client_phone = client.phone_number
@@ -64,7 +64,7 @@ def load_clients(master, content_frame):
             )
             cars_frame.pack(side="right", fill="y", pady=5)
 
-            cars = session.query(Car).filter_by(client_id=client.id).all()
+            cars = session.query(Car).filter_by(client_id=client.id).order_by(Car.id.desc()).all()
             if not cars:
                 ttk.Label(client_frame, text="Няма регистрирани автомобили.").pack(anchor="w", padx=20)
             else:
@@ -128,7 +128,7 @@ def show_client_details(master, client, content_frame):
 
     cars_frame = create_scrollable_frame(win)
 
-    cars = session.query(Car).filter_by(client_id=client.id).all()
+    cars = session.query(Car).filter_by(client_id=client.id).order_by(Car.id.desc()).all()
     if not cars:
         ttk.Label(cars_frame, text="Няма регистрирани автомобили.").pack(anchor="w", padx=20)
     else:
