@@ -14,6 +14,7 @@ def apply_custom_style():
 
     # Label
     style.configure("TLabel", background="gray80", foreground="black")
+    style.configure("Blue.TLabel", background="gray80", foreground="dodger blue")
 
     # Button
     style.configure("TButton", background="gray60", foreground="black", padding=6, relief="flat")

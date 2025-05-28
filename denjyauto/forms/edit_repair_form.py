@@ -14,11 +14,6 @@ class EditRepairForm(tk.Toplevel):
         self.configure(bg="gray80")
         self.reload_callback = reload_callback
 
-        ttk.Label(self, text=f"Клиент: {client.name}, Aвтомобил: {car.registration_number}",
-                  font=("Arial", 12),
-                  foreground="dodger blue"
-                  ).pack(pady=5)
-
         ttk.Label(self, text="Дата на ремонта:", background="gray80", foreground="black").pack(pady=5)
         self.repair_date_var = tk.StringVar(value=repair.repair_date.strftime("%Y-%m-%d"))
         self.repair_date_entry = ttk.Entry(self, textvariable=self.repair_date_var)
@@ -45,6 +40,9 @@ class EditRepairForm(tk.Toplevel):
         if repair.repair_notes:
             self.notes_text.insert("1.0", repair.repair_notes)
 
+        ttk.Label(self, text=f"Клиент: {client.name} Aвтомобил: {car.registration_number}",
+                  foreground="black"
+                  ).pack(anchor="nw", pady=5)
 
         ttk.Button(self, text="Запази", command=self.save_repair).pack(pady=10)
 

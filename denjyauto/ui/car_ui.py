@@ -37,11 +37,11 @@ def show_car_details(context: AppContext, car_id, client):
             return
 
         win = tk.Toplevel(context.master)
-        win.title(f"Клиент: {client.name}, автомобил: {car.registration_number}")
+        win.title(f"Клиент: {client.name}, Автомобил: {car.registration_number}")
         win.configure(background="gray80")
         win.geometry("600x600")
 
-        ttk.Label(win, text=f"Клиент: {client.name}, Aвтомобил: {car.registration_number}",
+        ttk.Label(win, text=f"Клиент: {client.name}",
                   font=("Arial", 12),
                   foreground="dodger blue"
                   ).pack(pady=5)
@@ -143,18 +143,16 @@ def show_repair_details(context: AppContext, repair_id, car, client):
 
     win = tk.Toplevel(context.master)
     win.configure(bg="gray80")
-    win.geometry("400x300")
+    win.geometry("500x400")
     win.title(f"РЕМОНТ")
 
-    ttk.Label(win, text=f"Клиент: {client.name}, Aвтомобил: {car.registration_number}, Дата: {repair.repair_date}",
-              font=("Arial", 12),
-              foreground="dodger blue"
-              ).pack(pady=5)
-
-    ttk.Label(win, text=f"КИЛОМЕТРИ ПРИ РЕМОНТА: {repair.repair_km}").pack(padx=10, pady=5)
-    ttk.Label(win, text=f"РЕМОНТИ: \n{repair.repairs_type_field}").pack(padx=10, pady=5)
-    ttk.Label(win, text=f"БЕЛЕЖКИ: {repair.repair_notes}").pack(padx=10, pady=5)
-    ttk.Label(win, text=f"ЦЕНА НА РЕМОНТА: {repair.repair_price}").pack(padx=10, pady=5)
+    ttk.Label(win, text=f"КЛИЕНТ: {client.name}").pack(anchor="nw", padx=10, pady=5)
+    ttk.Label(win, text=f"АВТОМОБИЛ: {car.registration_number}").pack(anchor="nw", padx=10, pady=5)
+    ttk.Label(win, text=f"ДАТА: {repair.repair_date}").pack(anchor="nw", padx=10, pady=5)
+    ttk.Label(win, text=f"КИЛОМЕТРИ ПРИ РЕМОНТА: {repair.repair_km}").pack(anchor="nw",padx=10, pady=5)
+    ttk.Label(win, text=f"РЕМОНТИ: \n{repair.repairs_type_field}").pack(anchor="nw",padx=10, pady=5)
+    ttk.Label(win, text=f"БЕЛЕЖКИ: {repair.repair_notes}").pack(anchor="nw",padx=10, pady=5)
+    ttk.Label(win, text=f"ЦЕНА НА РЕМОНТА: {repair.repair_price}").pack(anchor="nw",padx=10, pady=5)
 
     repair_buttons_frame = ttk.Frame(win, padding=10 )
     repair_buttons_frame.pack(side="top", fill="y", pady=5)

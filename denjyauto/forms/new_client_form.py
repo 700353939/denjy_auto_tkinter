@@ -11,18 +11,18 @@ class NewClientForm(tk.Toplevel):
     def __init__(self, context, on_client_added_callback):
         super().__init__(context.master)
         self.title("Нов клиент и автомобил")
-        self.geometry("400x400")
+        self.geometry("400x500")
         self.configure(bg="gray80")
         self.on_client_added_callback = on_client_added_callback
 
         # Client model
         self.name_entry = self._create_labeled_entry("Име на клиент")
         self.phone_entry = self._create_labeled_entry("Телефон")
-        ttk.Label(self, text="Бележки:", foreground="dodger blue").pack()
+        ttk.Label(self, text="Бележки:", foreground="dodger blue").pack(padx=10, pady=5)
         self.notes_text = tk.Text(self, height=3, background="gray70", foreground="black", insertbackground="black")
         self.notes_text.pack()
 
-        # Car model
+        ttk.Label(self, text=f"Данни за автомобила", foreground="black").pack(padx=10, pady=5)
         self.reg_number_entry = self._create_labeled_entry("Рег. номер")
         self.vin_entry = self._create_labeled_entry("VIN")
         self.brand_entry = self._create_labeled_entry("Марка")
@@ -34,7 +34,7 @@ class NewClientForm(tk.Toplevel):
 
     def _create_labeled_entry(self, label_text):
         label = ttk.Label(self, text=label_text, foreground="dodger blue")
-        label.pack()
+        label.pack(padx=10, pady=5)
         entry = ttk.Entry(self)
         entry.pack()
         return entry

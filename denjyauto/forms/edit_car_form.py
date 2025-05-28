@@ -13,11 +13,7 @@ class EditCarForm(tk.Toplevel):
         self.geometry("400x400")
         self.configure(bg="gray80")
 
-        ttk.Label(self, text=f"Клиент: {client.name}, Aвтомобил: {car.registration_number}",
-                  font=("Arial", 12),
-                  foreground="dodger blue"
-                  ).pack(pady=5)
-
+        ttk.Label(self, text=f"Клиент: {client.name}", foreground="black").pack(anchor="nw", pady=5)
 
         ttk.Label(self, text="Регистрационен номер:", background="gray80", foreground="black").pack(pady=5)
         self.registration_number_var = tk.StringVar(value=car.registration_number)
@@ -43,7 +39,6 @@ class EditCarForm(tk.Toplevel):
         self.year_var = tk.IntVar(value=car.year)
         self.year_entry = ttk.Entry(self, textvariable=self.year_var)
         self.year_entry.pack(pady=5, fill="x", padx=10)
-
 
         ttk.Button(self, text="Запази", command=self.save_car).pack(pady=10)
 

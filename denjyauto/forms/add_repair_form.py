@@ -23,11 +23,6 @@ class AddRepairForm(tk.Toplevel):
         self.configure(bg="gray80")
         self.reload_callback = reload_callback
 
-        ttk.Label(self, text=f"Клиент: {client.name}, Aвтомобил: {car.registration_number}",
-                  font=("Arial", 12),
-                  foreground="dodger blue"
-                  ).pack(pady=5)
-
         ttk.Label(self, text="Дата:").pack()
         self.date_var = tk.StringVar(value=str(date.today()))
         ttk.Entry(self, textvariable=self.date_var).pack()
@@ -51,6 +46,10 @@ class AddRepairForm(tk.Toplevel):
         ttk.Label(self, text="Бележки:").pack()
         self.notes_text = tk.Text(self, height=4, background="gray70", foreground="black", insertbackground="black")
         self.notes_text.pack()
+
+        ttk.Label(self, text=f"Клиент: {client.name} Aвтомобил: {car.registration_number}",
+                  foreground="black"
+                  ).pack(anchor="nw", pady=5)
 
         ttk.Button(self, text="Запази ремонта", command=self.save_repair).pack(pady=10)
 
