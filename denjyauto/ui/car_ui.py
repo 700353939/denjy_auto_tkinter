@@ -37,14 +37,11 @@ def show_car_details(context: AppContext, car_id, client):
             return
 
         win = tk.Toplevel(context.master)
-        win.title(f"Клиент: {client.name}, Автомобил: {car.registration_number}")
+        win.title("Детайли автомобил")
         win.configure(background="gray80")
         win.geometry("600x600")
 
-        ttk.Label(win, text=f"Клиент: {client.name}",
-                  font=("Arial", 12),
-                  foreground="dodger blue"
-                  ).pack(pady=5)
+        ttk.Label(win, text=f"Клиент: {client.name}", foreground="dodger blue").pack(anchor="nw", pady=5, padx=10)
 
         create_copyable_label(win, text=f"Рег. номер: {car.registration_number}")
         create_copyable_label(win, text=f"VIN: {car.vin}")
