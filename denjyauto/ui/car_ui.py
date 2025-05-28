@@ -27,6 +27,8 @@ def add_new_car_to_client(context: AppContext, client_id):
         session.close()
 
 def show_car_details(context: AppContext, car_id, client):
+    from denjyauto.ui.clients_ui import show_client_details
+
     session: Session = SessionLocal()
     try:
         car = session.query(Car).get(car_id)
@@ -70,7 +72,7 @@ def show_car_details(context: AppContext, car_id, client):
             car_buttons_frame,
             text="ИЗТРИЙ АВТОМОБИЛА",
             style="RedText.TButton",
-            command=lambda: delete_car(car)
+            command=lambda: delete_car(car, reload_callback=lambda: show_client_details(context, client.id))
         ).pack(side="left", pady=10, padx=10)
 
         repairs_frame = create_scrollable_frame(win)
@@ -127,7 +129,7 @@ def delete_car(car, reload_callback=None):
         session.close()
 
 def add_repair_to_car(context: AppContext, car, client):
-    AddRepairForm(context, car, client, reload_callback=lambda repair_id: show_repair_details(context, repair_id, car.id, client))
+    AddRepairForm(context, car, client, reload_callback=lambda repair_id: show_repair_details(context, repair_id, car, client))
 
 def show_repair_details(context: AppContext, repair_id, car, client):
     session: Session = SessionLocal()
@@ -168,7 +170,7 @@ def show_repair_details(context: AppContext, repair_id, car, client):
         repair_buttons_frame,
         text="ИЗТРИЙ РЕМОНТА",
         style="RedText.TButton",
-        command=lambda r=repair: delete_repair(r, reload_callback=lambda: show_car_details(context, car, client))
+        command=lambda r=repair: delete_repair(r, reload_callback=lambda: show_car_details(context, car.id, client))
     ).pack(side="left", pady=10, padx=10)
 
 
