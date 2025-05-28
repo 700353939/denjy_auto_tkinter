@@ -15,8 +15,8 @@ REPAIR_TYPE_OPTIONS = [
 ]
 
 class AddRepairForm(tk.Toplevel):
-    def __init__(self, master, car, reload_callback=None):
-        super().__init__(master)
+    def __init__(self, context, car, reload_callback=None):
+        super().__init__(context.master)
         self.title("Добавяне на ремонт")
         self.car = car
         self.geometry("600x600")
@@ -69,11 +69,13 @@ class AddRepairForm(tk.Toplevel):
             session: Session = SessionLocal()
             session.add(repair)
             session.commit()
-            session.close()
+            session.refresh(repair)
 
             messagebox.showinfo("Готово", "Ремонтът е добавен успешно.")
 
-            self.reload_callback()
+            if self.reload_callback:
+                self.reload_callback(repair.id)
+
             self.destroy()
 
         except Exception as e:

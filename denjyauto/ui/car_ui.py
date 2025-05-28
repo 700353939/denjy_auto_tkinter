@@ -9,9 +9,10 @@ from denjyauto.forms.edit_repair_form import EditRepairForm
 from denjyauto.models.car import Car
 from denjyauto.models.client import Client
 from denjyauto.models.repair import Repair
+from denjyauto.context import AppContext
 from denjyauto.ui.widgets import create_copyable_label, create_scrollable_frame
 
-def add_new_car_to_client(master, client_id):
+def add_new_car_to_client(context: AppContext, client_id):
 
     session: Session = SessionLocal()
     try:
@@ -20,12 +21,12 @@ def add_new_car_to_client(master, client_id):
             messagebox.showerror("Грешка", "Клиентът не е намерен.")
             return
 
-        AddCarForm(master, client, reload_callback=lambda car_id: show_car_details(master, car_id, client.name))
+        AddCarForm(context, client, reload_callback=lambda car_id: show_car_details(context, car_id, client))
 
     finally:
         session.close()
 
-def show_car_details(master, car_id, client_name):
+def show_car_details(context: AppContext, car_id, client):
     session: Session = SessionLocal()
     try:
         car = session.query(Car).get(car_id)
@@ -33,8 +34,8 @@ def show_car_details(master, car_id, client_name):
             messagebox.showerror("Грешка", "Автомобилът не е намерен.")
             return
 
-        win = tk.Toplevel(master)
-        win.title(f"Клиент: {client_name}, автомобил: {car.registration_number}")
+        win = tk.Toplevel(context.master)
+        win.title(f"Клиент: {client.name}, автомобил: {car.registration_number}")
         win.configure(background="gray80")
         win.geometry("600x600")
 
@@ -50,14 +51,14 @@ def show_car_details(master, car_id, client_name):
         ttk.Button(
             car_buttons_frame,
             text="ДОБАВИ РЕМОНТ",
-            command=lambda: AddRepairForm(win, car)
+            command=lambda: add_repair_to_car(context, car, client)
         ).pack(side="left", pady=10, padx=10)
 
         ttk.Button(
             car_buttons_frame,
             text="РЕДАКТИРАЙ АВТОМОБИЛА",
             style="TButton",
-            command=lambda: edit_car(master, car.id, client_name)
+            command=lambda: edit_car(context, car.id, client)
         ).pack(side="left", pady=10, padx=10)
 
         ttk.Button(
@@ -79,14 +80,14 @@ def show_car_details(master, car_id, client_name):
                 ttk.Button(
                     repairs_frame,
                     text=f"Ремонт: {repair.repair_date}",
-                    command=lambda r=repair: show_repair_details(master, r, car, client_name)
+                    command=lambda r=repair: show_repair_details(context, r.id, car, client)
                 ).grid(row=row, column=column, padx=5, pady=5, sticky="w")
 
     finally:
         session.close()
 
 
-def edit_car(master, car_id, client_name):
+def edit_car(context: AppContext, car_id, client):
     session: Session = SessionLocal()
     try:
         car = session.query(Car).get(car_id)
@@ -95,12 +96,14 @@ def edit_car(master, car_id, client_name):
             return
     finally:
         session.close()
-    EditCarForm(master, car, reload_callback=lambda: show_car_details(master, car_id, client_name))
+    EditCarForm(context, car, reload_callback=lambda: show_car_details(context, car_id, client))
 
 
 def delete_car(car, reload_callback=None):
     confirm = messagebox.askyesno("Потвърждение",
-                                  f"Сигурен ли си, че искаш да изтриеш автомобил '{car.registration_number}' и всички свързани данни?")
+                                  f"Сигурен ли си, че искаш да изтриеш автомобил '{car.registration_number}' "
+                                  f"и всички свързани данни?"
+                                  )
     if not confirm:
         return
 
@@ -118,11 +121,20 @@ def delete_car(car, reload_callback=None):
     finally:
         session.close()
 
-def add_repair_to_car():
-    pass
+def add_repair_to_car(context: AppContext, car, client):
+    AddRepairForm(context, car, reload_callback=lambda repair_id: show_repair_details(context, repair_id, car.id, client))
 
-def show_repair_details(master, repair, car, client_name):
-    win = tk.Toplevel(master)
+def show_repair_details(context: AppContext, repair_id, car, client):
+    session: Session = SessionLocal()
+    try:
+        repair = session.query(Repair).get(repair_id)
+        if not car:
+            messagebox.showerror("Грешка", "Автомобилът не е намерен.")
+            return
+    finally:
+        session.close()
+
+    win = tk.Toplevel(context.master)
     win.configure(bg="gray80")
     win.title(f"ДАТА НА РЕМОНТА: {repair.repair_date}")
 
@@ -138,19 +150,19 @@ def show_repair_details(master, repair, car, client_name):
         repair_buttons_frame,
         text="РЕДАКТИРАЙ РЕМОНТА",
         style="TButton",
-        command=lambda r=repair: edit_repair(master, r)
+        command=lambda r=repair: edit_repair(context, r)
     ).pack(side="left", pady=10, padx=10)
 
     ttk.Button(
         repair_buttons_frame,
         text="ИЗТРИЙ РЕМОНТА",
         style="RedText.TButton",
-        command=lambda r=repair: delete_repair(r, reload_callback=lambda: show_car_details(master, car, client_name))
+        command=lambda r=repair: delete_repair(r, reload_callback=lambda: show_car_details(context, car, client))
     ).pack(side="left", pady=10, padx=10)
 
 
-def edit_repair(master, repair):
-    EditRepairForm(master, repair)
+def edit_repair(context: AppContext, repair):
+    EditRepairForm(context, repair)
 
 def delete_repair(repair, reload_callback=None):
     confirm = messagebox.askyesno("Потвърждение",

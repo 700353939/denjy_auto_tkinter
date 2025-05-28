@@ -6,8 +6,8 @@ from denjyauto.database import SessionLocal
 from denjyauto.models.repair import Repair
 
 class EditRepairForm(tk.Toplevel):
-    def __init__(self, master, repair: Repair):
-        super().__init__(master)
+    def __init__(self, context, repair: Repair):
+        super().__init__(context.master)
         self.repair = repair
         self.title("Редакция на ремонт")
         self.geometry("400x500")

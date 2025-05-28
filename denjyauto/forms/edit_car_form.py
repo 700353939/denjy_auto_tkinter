@@ -5,8 +5,8 @@ from denjyauto.database import SessionLocal
 from denjyauto.models.car import Car
 
 class EditCarForm(tk.Toplevel):
-    def __init__(self, master, car: Car, reload_callback):
-        super().__init__(master)
+    def __init__(self, context, car: Car, reload_callback):
+        super().__init__(context.master)
         self.car = car
         self.reload_callback = reload_callback
         self.title("Редакция на автомобил")

@@ -6,23 +6,22 @@ from denjyauto.forms.edit_client_form import EditClientForm
 from denjyauto.forms.new_client_form import NewClientForm
 from denjyauto.models.client import Client
 from denjyauto.models.car import Car
+from denjyauto.context import AppContext
 from denjyauto.ui.widgets import clear_content, create_scrollable_frame
 from denjyauto.ui.car_ui import add_new_car_to_client, show_car_details
 
 
-def load_clients(master, content_frame):
-    clear_content(content_frame)
+def load_clients(context: AppContext):
+    clear_content(context.content_frame)
     session: Session = SessionLocal()
 
     try:
         clients = session.query(Client).order_by(Client.id.desc()).all()
         for client in clients:
-            client_name = client.name
-            client_phone = client.phone_number
 
             client_frame = ttk.LabelFrame(
-                content_frame,
-                text=f"Име на клиента: {client_name}, телефон: {client_phone}",
+                context.content_frame,
+                text=f"Име на клиента: {client.name}, телефон: {client.phone_number}",
                 padding=10,
                 labelanchor="n"
             )
@@ -32,14 +31,14 @@ def load_clients(master, content_frame):
                 client_frame,
                 text="ДЕТАЙЛИ",
                 style="TButton",
-                command=lambda c=client: show_client_details(master, c.id, content_frame)
+                command=lambda c=client: show_client_details(context, c.id)
             ).pack(side="left", padx=10, pady=5)
 
             ttk.Button(
                 client_frame,
                 text="РЕДАКТИРАЙ КЛИЕНТ",
                 style="TButton",
-                command=lambda cl=client: edit_client(master, cl.id, content_frame)
+                command=lambda cl=client: edit_client(context, cl.id)
             ).pack(side="left", padx=10, pady=5)
 
             ttk.Button(
@@ -48,14 +47,14 @@ def load_clients(master, content_frame):
                 style="RedText.TButton",
                 command=lambda cl=client: delete_client(
                     cl,
-                    reload_callback=lambda: load_clients(master, content_frame))
+                    reload_callback=lambda: load_clients(context))
             ).pack(side="left", padx=10, pady=5)
 
             ttk.Button(
                 client_frame,
                 text="ДОБАВИ АВТОМОБИЛ",
                 style="TButton",
-                command=lambda c=client: add_new_car_to_client(master, c.id)
+                command=lambda c=client: add_new_car_to_client(context, c.id)
             ).pack(side="left", padx=10, pady=5)
 
             cars_frame = ttk.LabelFrame(
@@ -72,19 +71,19 @@ def load_clients(master, content_frame):
                     ttk.Button(
                         cars_frame,
                         text=f"{car.registration_number}",
-                        command=lambda cl_name=client_name, c=car: show_car_details(master, c.id, cl_name)
+                        command=lambda cl=client, c=car: show_car_details(context, c.id, cl)
                     ).pack(side="left", padx=10, pady=5)
 
 
     finally:
         session.close()
 
-def add_new_client(master, content_frame):
+def add_new_client(context: AppContext):
     def on_client_added():
-        load_clients(master, content_frame)
-    NewClientForm(master, on_client_added)
+        load_clients(context)
+    NewClientForm(context, on_client_added)
 
-def edit_client(master, client_id, content_frame):
+def edit_client(context: AppContext, client_id):
     session: Session = SessionLocal()
     try:
         client = session.query(Client).get(client_id)
@@ -92,12 +91,12 @@ def edit_client(master, client_id, content_frame):
             messagebox.showerror("Грешка", "Клиентът не е намерен.")
             return
 
-        EditClientForm(master, client, reload_callback=lambda: show_client_details(master, client_id, content_frame))
+        EditClientForm(context, client, reload_callback=lambda: show_client_details(context, client_id))
 
     finally:
         session.close()
 
-def show_client_details(master, client_id, content_frame):
+def show_client_details(context: AppContext, client_id):
     session: Session = SessionLocal()
     try:
         client = session.query(Client).get(client_id)
@@ -105,7 +104,7 @@ def show_client_details(master, client_id, content_frame):
             messagebox.showerror("Грешка", "Клиентът не е намерен.")
             return
 
-        win = tk.Toplevel(master)
+        win = tk.Toplevel(context.master)
         win.configure(bg="gray80")
         win.geometry("600x600")
 
@@ -120,7 +119,7 @@ def show_client_details(master, client_id, content_frame):
             client_buttons_frame,
             text="РЕДАКТИРАЙ КЛИЕНТ",
             style="TButton",
-            command=lambda cl=client: edit_client(master, cl.id, content_frame)
+            command=lambda cl=client: edit_client(context, cl.id)
         ).pack(side="left", padx=10, pady=5)
 
         ttk.Button(
@@ -129,14 +128,14 @@ def show_client_details(master, client_id, content_frame):
             style="RedText.TButton",
             command=lambda cl=client: delete_client(
                 cl,
-                reload_callback=lambda: load_clients(master, content_frame))
+                reload_callback=lambda: load_clients(context))
         ).pack(side="left", padx=10, pady=5)
 
         ttk.Button(
             client_buttons_frame,
             text="ДОБАВИ АВТОМОБИЛ",
             style="TButton",
-            command=lambda c=client: add_new_car_to_client(master, c.id)
+            command=lambda c=client: add_new_car_to_client(context, c.id)
         ).pack(side="left", padx=10, pady=5)
 
         cars_frame = create_scrollable_frame(win)
@@ -151,7 +150,7 @@ def show_client_details(master, client_id, content_frame):
                 ttk.Button(
                     cars_frame,
                     text=f"{car.registration_number}",
-                    command=lambda cl_name=client.name, c=car: show_car_details(master, c.id, cl_name)
+                    command=lambda cl_name=client.name, c=car: show_car_details(context, c.id, cl_name)
                 ).grid(row=row, column=column, padx=5, pady=5, sticky="w")
 
     finally:

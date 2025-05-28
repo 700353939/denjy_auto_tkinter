@@ -8,8 +8,8 @@ from denjyauto.models.car import Car
 Session = sessionmaker(bind=engine)
 
 class NewClientForm(tk.Toplevel):
-    def __init__(self, master, on_client_added_callback):
-        super().__init__(master)
+    def __init__(self, context, on_client_added_callback):
+        super().__init__(context.master)
         self.title("Нов клиент и автомобил")
         self.geometry("400x400")
         self.configure(bg="gray80")
@@ -42,29 +42,43 @@ class NewClientForm(tk.Toplevel):
     def save_client(self):
         session = Session()
         try:
-            client = Client(
-                name=self.name_entry.get(),
-                phone_number=self.phone_entry.get(),
-                client_notes=self.notes_text.get("1.0", "end").strip(),
-            )
+            name = self.name_entry.get().strip()
+            phone = self.phone_entry.get().strip()
+            notes = self.notes_text.get("1.0", "end").strip()
+            reg_num = self.reg_number_entry.get().strip().upper()
+            vin = self.vin_entry.get().strip().upper()
+            brand = self.brand_entry.get().strip().capitalize()
+            model = self.model_entry.get().strip().capitalize()
+            year_str = self.year_entry.get().strip()
+
+            if not all([name, phone, reg_num, vin, brand, model, year_str]):
+                raise ValueError("Всички полета трябва да са попълнени.")
+
+            if not year_str.isdigit():
+                raise ValueError("Годината трябва да е цяло число.")
+
+            client = Client(name=name, phone_number=phone, client_notes=notes)
             session.add(client)
-            session.flush()  # За да получим client.id преди да commit-нем
+            session.flush()
 
             car = Car(
-                registration_number=self.reg_number_entry.get().upper(),
-                vin=self.vin_entry.get().upper(),
-                brand=self.brand_entry.get().capitalize(),
-                model=self.model_entry.get().capitalize(),
-                year=int(self.year_entry.get()),
+                registration_number=reg_num,
+                vin=vin,
+                brand=brand,
+                model=model,
+                year=int(year_str),
                 client_id=client.id
             )
             session.add(car)
 
             session.commit()
-            messagebox.showinfo("Успех", "Клиентът и автомобила са записани.")
+            messagebox.showinfo("Успех", "Клиентът и автомобилът са записани.")
 
-            self.on_client_added_callback()
+            if self.on_client_added_callback:
+                self.on_client_added_callback()
+
             self.destroy()
+
         except Exception as e:
             session.rollback()
             messagebox.showerror("Грешка", str(e))

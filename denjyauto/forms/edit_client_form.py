@@ -5,8 +5,8 @@ from denjyauto.database import SessionLocal
 from denjyauto.models.client import Client
 
 class EditClientForm(tk.Toplevel):
-    def __init__(self, master, client: Client, reload_callback):
-        super().__init__(master)
+    def __init__(self, context, client: Client, reload_callback):
+        super().__init__(context.master)
         self.client = client
         self.reload_callback = reload_callback
         self.title("Редакция на клиент")
