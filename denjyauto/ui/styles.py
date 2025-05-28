@@ -49,7 +49,7 @@ def apply_custom_style():
                     )
 
     style.map("TCheckbutton",
-              foreground=[("active", "dodger blue"), ("selected", "dodger blue")],
+              foreground=[("selected", "dodger blue")],
               indicatorcolor=[("active", "dodger blue"), ("selected", "dodger blue")],
               background=[("active", "gray80")]
               )

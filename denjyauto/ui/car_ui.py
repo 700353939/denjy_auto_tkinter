@@ -150,6 +150,8 @@ def show_repair_details(context: AppContext, repair_id, car, client):
     ttk.Label(win, text=f"РЕМОНТИ: \n{repair.repairs_type_field}").pack(anchor="nw",padx=10, pady=5)
     ttk.Label(win, text=f"БЕЛЕЖКИ: {repair.repair_notes}").pack(anchor="nw",padx=10, pady=5)
     ttk.Label(win, text=f"ЦЕНА НА РЕМОНТА: {repair.repair_price}").pack(anchor="nw",padx=10, pady=5)
+    ttk.Label(win, text=f"Платено: {repair.is_it_paid}").pack(anchor="nw",padx=10, pady=5)
+
 
     repair_buttons_frame = ttk.Frame(win, padding=10 )
     repair_buttons_frame.pack(side="top", fill="y", pady=5)

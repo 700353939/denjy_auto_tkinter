@@ -43,6 +43,9 @@ class AddRepairForm(tk.Toplevel):
         self.price_var = tk.StringVar()
         ttk.Entry(self, textvariable=self.price_var).pack()
 
+        self.is_paid_var = tk.BooleanVar(value=False)
+        ttk.Checkbutton(self, text="Платено", variable=self.is_paid_var).pack(pady=5)
+
         ttk.Label(self, text="Бележки:").pack()
         self.notes_text = tk.Text(self, height=4, background="gray70", foreground="black", insertbackground="black")
         self.notes_text.pack()
@@ -62,8 +65,9 @@ class AddRepairForm(tk.Toplevel):
             repair = Repair(
                 repair_date = datetime.strptime(self.date_var.get(), "%Y-%m-%d").date(),
                 repair_km=int(self.mileage_var.get()),
-                repairs_type_field="\n".join(selected_types),
+                repairs_type_field=", ".join(selected_types),
                 repair_price=float(self.price_var.get()),
+                is_it_paid=self.is_paid_var.get(),
                 repair_notes=self.notes_text.get("1.0", "end").strip(),
                 car_id=self.car.id
             )

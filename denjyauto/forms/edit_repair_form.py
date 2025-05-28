@@ -34,6 +34,9 @@ class EditRepairForm(tk.Toplevel):
         self.repair_price_entry = ttk.Entry(self, textvariable=self.repair_price_var)
         self.repair_price_entry.pack(pady=5, fill="x", padx=10)
 
+        self.is_paid_var = tk.BooleanVar(value=repair.is_it_paid)
+        ttk.Checkbutton(self, text="Платено", variable=self.is_paid_var).pack(pady=5)
+
         ttk.Label(self, text="Бележки:", background="gray80", foreground="black").pack(pady=5)
         self.notes_text = tk.Text(self, height=6, bg="gray70", fg="black", insertbackground="black")
         self.notes_text.pack(pady=5, fill="both", expand=True, padx=10)
@@ -54,6 +57,7 @@ class EditRepairForm(tk.Toplevel):
             repair.repair_km = self.repair_km_var.get()
             repair.repairs_type_field = self.repairs_types_var.get()
             repair.repair_price = float(self.repair_price_var.get())
+            repair.is_it_paid = self.is_paid_var.get()
             repair.repair_notes = self.notes_text.get("1.0", "end-1c").strip()
 
             session.commit()
