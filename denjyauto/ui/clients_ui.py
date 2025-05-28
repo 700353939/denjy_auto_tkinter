@@ -150,7 +150,7 @@ def show_client_details(context: AppContext, client_id):
                 ttk.Button(
                     cars_frame,
                     text=f"{car.registration_number}",
-                    command=lambda cl_name=client.name, c=car: show_car_details(context, c.id, cl_name)
+                    command=lambda cl=client, c=car: show_car_details(context, c.id, cl)
                 ).grid(row=row, column=column, padx=5, pady=5, sticky="w")
 
     finally:
