@@ -6,12 +6,18 @@ from denjyauto.database import SessionLocal
 from denjyauto.models.repair import Repair
 
 class EditRepairForm(tk.Toplevel):
-    def __init__(self, context, repair: Repair):
+    def __init__(self, context, repair, car, client, reload_callback=None):
         super().__init__(context.master)
         self.repair = repair
-        self.title("Редакция на ремонт")
+        self.title(f"Редакция на ремонтa")
         self.geometry("400x500")
         self.configure(bg="gray80")
+        self.reload_callback = reload_callback
+
+        ttk.Label(self, text=f"Клиент: {client.name}, Aвтомобил: {car.registration_number}",
+                  font=("Arial", 12),
+                  foreground="dodger blue"
+                  ).pack(pady=5)
 
         ttk.Label(self, text="Дата на ремонта:", background="gray80", foreground="black").pack(pady=5)
         self.repair_date_var = tk.StringVar(value=repair.repair_date.strftime("%Y-%m-%d"))
@@ -55,6 +61,7 @@ class EditRepairForm(tk.Toplevel):
             session.commit()
             messagebox.showinfo("Успех", "Автомобилът е записан успешно.")
 
+            self.reload_callback()
             self.destroy()
 
         except Exception as e:

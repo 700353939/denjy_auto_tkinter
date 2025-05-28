@@ -39,6 +39,11 @@ def show_car_details(context: AppContext, car_id, client):
         win.configure(background="gray80")
         win.geometry("600x600")
 
+        ttk.Label(win, text=f"Клиент: {client.name}, Aвтомобил: {car.registration_number}",
+                  font=("Arial", 12),
+                  foreground="dodger blue"
+                  ).pack(pady=5)
+
         create_copyable_label(win, text=f"Рег. номер: {car.registration_number}")
         create_copyable_label(win, text=f"VIN: {car.vin}")
         create_copyable_label(win, text=f"Марка: {car.brand}")
@@ -96,7 +101,7 @@ def edit_car(context: AppContext, car_id, client):
             return
     finally:
         session.close()
-    EditCarForm(context, car, reload_callback=lambda: show_car_details(context, car_id, client))
+    EditCarForm(context, car, client, reload_callback=lambda: show_car_details(context, car_id, client))
 
 
 def delete_car(car, reload_callback=None):
@@ -122,7 +127,7 @@ def delete_car(car, reload_callback=None):
         session.close()
 
 def add_repair_to_car(context: AppContext, car, client):
-    AddRepairForm(context, car, reload_callback=lambda repair_id: show_repair_details(context, repair_id, car.id, client))
+    AddRepairForm(context, car, client, reload_callback=lambda repair_id: show_repair_details(context, repair_id, car.id, client))
 
 def show_repair_details(context: AppContext, repair_id, car, client):
     session: Session = SessionLocal()
@@ -136,7 +141,13 @@ def show_repair_details(context: AppContext, repair_id, car, client):
 
     win = tk.Toplevel(context.master)
     win.configure(bg="gray80")
-    win.title(f"ДАТА НА РЕМОНТА: {repair.repair_date}")
+    win.geometry("400x300")
+    win.title(f"РЕМОНТ")
+
+    ttk.Label(win, text=f"Клиент: {client.name}, Aвтомобил: {car.registration_number}, Дата: {repair.repair_date}",
+              font=("Arial", 12),
+              foreground="dodger blue"
+              ).pack(pady=5)
 
     ttk.Label(win, text=f"КИЛОМЕТРИ ПРИ РЕМОНТА: {repair.repair_km}").pack(padx=10, pady=5)
     ttk.Label(win, text=f"РЕМОНТИ: \n{repair.repairs_type_field}").pack(padx=10, pady=5)
@@ -150,7 +161,7 @@ def show_repair_details(context: AppContext, repair_id, car, client):
         repair_buttons_frame,
         text="РЕДАКТИРАЙ РЕМОНТА",
         style="TButton",
-        command=lambda r=repair: edit_repair(context, r)
+        command=lambda r=repair: edit_repair(context, r.id, car, client)
     ).pack(side="left", pady=10, padx=10)
 
     ttk.Button(
@@ -161,8 +172,16 @@ def show_repair_details(context: AppContext, repair_id, car, client):
     ).pack(side="left", pady=10, padx=10)
 
 
-def edit_repair(context: AppContext, repair):
-    EditRepairForm(context, repair)
+def edit_repair(context: AppContext, repair_id, car, client):
+    session: Session = SessionLocal()
+    try:
+        repair = session.query(Repair).get(repair_id)
+        if not repair:
+            messagebox.showerror("Грешка", "Ремонтът не е намерен.")
+            return
+    finally:
+        session.close()
+    EditRepairForm(context, repair, car, client, reload_callback=lambda: show_repair_details(context, repair.id, car, client))
 
 def delete_repair(repair, reload_callback=None):
     confirm = messagebox.askyesno("Потвърждение",

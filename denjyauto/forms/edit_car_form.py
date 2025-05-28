@@ -5,13 +5,19 @@ from denjyauto.database import SessionLocal
 from denjyauto.models.car import Car
 
 class EditCarForm(tk.Toplevel):
-    def __init__(self, context, car: Car, reload_callback):
+    def __init__(self, context, car, client, reload_callback):
         super().__init__(context.master)
         self.car = car
         self.reload_callback = reload_callback
-        self.title("Редакция на автомобил")
+        self.title(f"Редакция на автомобил {car.registration_number}")
         self.geometry("400x400")
         self.configure(bg="gray80")
+
+        ttk.Label(self, text=f"Клиент: {client.name}, Aвтомобил: {car.registration_number}",
+                  font=("Arial", 12),
+                  foreground="dodger blue"
+                  ).pack(pady=5)
+
 
         ttk.Label(self, text="Регистрационен номер:", background="gray80", foreground="black").pack(pady=5)
         self.registration_number_var = tk.StringVar(value=car.registration_number)

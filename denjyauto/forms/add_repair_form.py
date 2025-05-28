@@ -15,7 +15,7 @@ REPAIR_TYPE_OPTIONS = [
 ]
 
 class AddRepairForm(tk.Toplevel):
-    def __init__(self, context, car, reload_callback=None):
+    def __init__(self, context, car, client, reload_callback=None):
         super().__init__(context.master)
         self.title("Добавяне на ремонт")
         self.car = car
@@ -23,7 +23,10 @@ class AddRepairForm(tk.Toplevel):
         self.configure(bg="gray80")
         self.reload_callback = reload_callback
 
-        ttk.Label(self, text=f"Автомобил: {car.registration_number}", font=("Arial", 12, "bold"), foreground="dodger blue").pack(pady=5)
+        ttk.Label(self, text=f"Клиент: {client.name}, Aвтомобил: {car.registration_number}",
+                  font=("Arial", 12),
+                  foreground="dodger blue"
+                  ).pack(pady=5)
 
         ttk.Label(self, text="Дата:").pack()
         self.date_var = tk.StringVar(value=str(date.today()))
