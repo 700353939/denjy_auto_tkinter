@@ -19,7 +19,7 @@ class AddRepairForm(tk.Toplevel):
         super().__init__(context.master)
         self.title("Добавяне на ремонт")
         self.car = car
-        self.geometry("600x600")
+        self.geometry("600x700")
         self.configure(bg="gray80")
         self.reload_callback = reload_callback
 

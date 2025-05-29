@@ -10,7 +10,7 @@ class EditRepairForm(tk.Toplevel):
         super().__init__(context.master)
         self.repair = repair
         self.title(f"Редакция на ремонтa")
-        self.geometry("400x600")
+        self.geometry("400x700")
         self.configure(bg="gray80")
         self.reload_callback = reload_callback
 
@@ -25,9 +25,14 @@ class EditRepairForm(tk.Toplevel):
         self.repair_km_entry.pack(pady=5, fill="x", padx=10)
 
         ttk.Label(self, text="Видове ремонти:", background="gray80", foreground="black").pack(pady=5)
-        self.repairs_types_var = tk.StringVar(value=repair.repairs_type_field)
-        self.repairs_types_entry = ttk.Entry(self, textvariable=self.repairs_types_var)
-        self.repairs_types_entry.pack(pady=5, fill="x", padx=10)
+        # self.repairs_types_var = tk.StringVar(value=repair.repairs_type_field)
+        # self.repairs_types_entry = ttk.Entry(self, textvariable=self.repairs_types_var)
+        # self.repairs_types_entry.pack(pady=5, fill="x", padx=10)
+
+        self.repairs_types_text = tk.Text(self, height=6, bg="gray70", fg="black", insertbackground="black")
+        self.repairs_types_text.pack(pady=5, fill="both", expand=True, padx=10)
+        if repair.repairs_type_field:
+            self.repairs_types_text.insert("1.0", repair.repairs_type_field)
 
         ttk.Label(self, text="Цена на ремонта:", background="gray80", foreground="black").pack(pady=5)
         self.repair_price_var = tk.StringVar(value=str(repair.repair_price))
@@ -55,7 +60,7 @@ class EditRepairForm(tk.Toplevel):
             repair = session.query(Repair).get(self.repair.id)
             repair.repair_date = datetime.strptime(self.repair_date_var.get(), "%Y-%m-%d").date()
             repair.repair_km = self.repair_km_var.get()
-            repair.repairs_type_field = self.repairs_types_var.get()
+            repair.repairs_type_field = self.repairs_types_text.get("1.0", "end-1c").strip()
             repair.repair_price = float(self.repair_price_var.get())
             repair.is_it_paid = self.is_paid_var.get()
             repair.repair_notes = self.notes_text.get("1.0", "end-1c").strip()

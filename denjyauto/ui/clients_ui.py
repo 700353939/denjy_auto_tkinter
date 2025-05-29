@@ -114,7 +114,7 @@ def show_client_details(context: AppContext, client_id):
 
         ttk.Label(win, text=f"Име: {client.name}", style="Blue.TLabel").pack(padx=10, pady=5)
         ttk.Label(win, text=f"Телефон: {client.phone_number}", style="Blue.TLabel").pack(padx=10, pady=5)
-        ttk.Label(win, text=f"Бележки: {client.client_notes}").pack(padx=10, pady=5)
+        ttk.Label(win, text=f"Бележки: {client.client_notes}", wraplength=500, justify="left").pack(padx=10, pady=5)
 
         client_buttons_frame = ttk.LabelFrame(win, padding=10 )
         client_buttons_frame.pack(side="top", fill="y", pady=5)
