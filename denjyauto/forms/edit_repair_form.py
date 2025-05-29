@@ -10,7 +10,7 @@ class EditRepairForm(tk.Toplevel):
         super().__init__(context.master)
         self.repair = repair
         self.title(f"Редакция на ремонтa")
-        self.geometry("400x500")
+        self.geometry("400x600")
         self.configure(bg="gray80")
         self.reload_callback = reload_callback
 

@@ -7,12 +7,14 @@ from denjyauto.forms.new_client_form import NewClientForm
 from denjyauto.models.client import Client
 from denjyauto.models.car import Car
 from denjyauto.context import AppContext
-from denjyauto.ui.widgets import clear_content, create_scrollable_frame
+from denjyauto.ui.widgets import create_scrollable_frame, close_parent_window_and
 from denjyauto.ui.car_ui import add_new_car_to_client, show_car_details
 
 
 def load_clients(context: AppContext):
-    clear_content(context.content_frame)
+    for widget in context.content_frame.winfo_children():
+        widget.destroy()
+
     session: Session = SessionLocal()
 
     try:
@@ -81,6 +83,7 @@ def load_clients(context: AppContext):
 def add_new_client(context: AppContext):
     def on_client_added():
         load_clients(context)
+
     NewClientForm(context, on_client_added)
 
 def edit_client(context: AppContext, client_id):
@@ -120,14 +123,16 @@ def show_client_details(context: AppContext, client_id):
             client_buttons_frame,
             text="РЕДАКТИРАЙ КЛИЕНТ",
             style="TButton",
-            command=lambda cl=client: edit_client(context, cl.id)
+            command=lambda cl=client: close_parent_window_and(edit_client, client_buttons_frame,context, cl.id)
         ).pack(side="left", padx=10, pady=5)
 
         ttk.Button(
             client_buttons_frame,
             text="ИЗТРИЙ КЛИЕНТ",
             style="RedText.TButton",
-            command=lambda cl=client: delete_client(
+            command=lambda cl=client: close_parent_window_and(
+                delete_client,
+                client_buttons_frame,
                 cl,
                 reload_callback=lambda: load_clients(context))
         ).pack(side="left", padx=10, pady=5)
@@ -136,7 +141,11 @@ def show_client_details(context: AppContext, client_id):
             client_buttons_frame,
             text="ДОБАВИ АВТОМОБИЛ",
             style="TButton",
-            command=lambda c=client: add_new_car_to_client(context, c.id)
+            command=lambda c=client: close_parent_window_and(
+                add_new_car_to_client,
+                client_buttons_frame,
+                context,
+                c.id)
         ).pack(side="left", padx=10, pady=5)
 
         cars_frame = create_scrollable_frame(win)
@@ -151,7 +160,12 @@ def show_client_details(context: AppContext, client_id):
                 ttk.Button(
                     cars_frame,
                     text=f"{car.registration_number}",
-                    command=lambda cl=client, c=car: show_car_details(context, c.id, cl)
+                    command=lambda cl=client, c=car: close_parent_window_and(
+                        show_car_details,
+                        cars_frame,
+                        context,
+                        c.id,
+                        cl)
                 ).grid(row=row, column=column, padx=5, pady=5, sticky="w")
 
     finally:

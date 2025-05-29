@@ -2,10 +2,11 @@ from tkinter import Frame, Canvas, Scrollbar, VERTICAL, HORIZONTAL
 from tkinter import ttk
 import tkinter as tk
 
+def close_parent_window_and(callback, widget, *args, **kwargs):
 
-def clear_content(container):
-    for widget in container.winfo_children():
-        widget.destroy()
+    top_window = widget.winfo_toplevel()
+    top_window.destroy()
+    callback(*args, **kwargs)
 
 def create_scrollable_frame(parent, scroll="vertical", use_ttk=True, style_name=None, bg="gray80"):
     container = Frame(parent, bg=bg)

@@ -10,7 +10,8 @@ from denjyauto.models.car import Car
 from denjyauto.models.client import Client
 from denjyauto.models.repair import Repair
 from denjyauto.context import AppContext
-from denjyauto.ui.widgets import create_copyable_label, create_scrollable_frame
+from denjyauto.ui.widgets import create_copyable_label, create_scrollable_frame, close_parent_window_and
+
 
 def add_new_car_to_client(context: AppContext, client_id):
 
@@ -55,21 +56,25 @@ def show_car_details(context: AppContext, car_id, client):
         ttk.Button(
             car_buttons_frame,
             text="ДОБАВИ РЕМОНТ",
-            command=lambda: add_repair_to_car(context, car, client)
+            command=lambda: close_parent_window_and(add_repair_to_car, car_buttons_frame, context, car, client)
         ).pack(side="left", pady=10, padx=10)
 
         ttk.Button(
             car_buttons_frame,
             text="РЕДАКТИРАЙ АВТОМОБИЛА",
             style="TButton",
-            command=lambda: edit_car(context, car.id, client)
+            command=lambda: close_parent_window_and(edit_car, car_buttons_frame, context, car.id, client)
         ).pack(side="left", pady=10, padx=10)
 
         ttk.Button(
             car_buttons_frame,
             text="ИЗТРИЙ АВТОМОБИЛА",
             style="RedText.TButton",
-            command=lambda: delete_car(car, reload_callback=lambda: show_client_details(context, client.id))
+            command=lambda: close_parent_window_and(
+                delete_car,
+                car_buttons_frame,
+                car,
+                reload_callback=lambda: show_client_details(context, client.id))
         ).pack(side="left", pady=10, padx=10)
 
         repairs_frame = create_scrollable_frame(win)
@@ -84,7 +89,13 @@ def show_car_details(context: AppContext, car_id, client):
                 ttk.Button(
                     repairs_frame,
                     text=f"Ремонт: {repair.repair_date}",
-                    command=lambda r=repair: show_repair_details(context, r.id, car, client)
+                    command=lambda r=repair: close_parent_window_and(
+                        show_repair_details,
+                        repairs_frame,
+                        context,
+                        r.id,
+                        car,
+                        client)
                 ).grid(row=row, column=column, padx=5, pady=5, sticky="w")
 
     finally:
@@ -160,14 +171,24 @@ def show_repair_details(context: AppContext, repair_id, car, client):
         repair_buttons_frame,
         text="РЕДАКТИРАЙ РЕМОНТА",
         style="TButton",
-        command=lambda r=repair: edit_repair(context, r.id, car, client)
+        command=lambda r=repair: close_parent_window_and(
+            edit_repair,
+            repair_buttons_frame,
+            context,
+            r.id,
+            car,
+            client)
     ).pack(side="left", pady=10, padx=10)
 
     ttk.Button(
         repair_buttons_frame,
         text="ИЗТРИЙ РЕМОНТА",
         style="RedText.TButton",
-        command=lambda r=repair: delete_repair(r, reload_callback=lambda: show_car_details(context, car.id, client))
+        command=lambda r=repair: close_parent_window_and(
+            delete_repair,
+            repair_buttons_frame,
+            r,
+            reload_callback=lambda: show_car_details(context, car.id, client))
     ).pack(side="left", pady=10, padx=10)
 
 
