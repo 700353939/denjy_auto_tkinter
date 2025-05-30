@@ -22,18 +22,18 @@ class MainWindow:
             command=lambda: load_clients(self.context)
         ).pack(side="left", pady=10, padx=50, fill="x", expand=True)
 
+        ttk.Button(
+            self.start_frame,
+            text="НОВ КЛИЕНТ",
+            command=lambda: add_new_client(self.context)
+        ).pack(side="left", pady=10, padx=10, fill="x", expand=True)
+
         ttk.Label(
             self.start_frame,
             image=self.logo_image,
             font=("Arial", 16),
             foreground="red"
         ).pack(side="left", anchor="center", pady=10, padx=50)
-
-        ttk.Button(
-            self.start_frame,
-            text="НОВ КЛИЕНТ",
-            command=lambda: add_new_client(self.context)
-        ).pack(side="left", pady=10, padx=10, fill="x", expand=True)
 
         ttk.Button(
             self.start_frame,
