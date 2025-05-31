@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from denjyauto.database import SessionLocal
 from denjyauto.forms.add_car_form import AddCarForm
 from denjyauto.forms.add_repair_form import AddRepairForm
@@ -224,5 +224,28 @@ def delete_repair(repair, reload_callback=None):
     except Exception as e:
         session.rollback()
         messagebox.showerror("Грешка", f"Неуспешно изтриване: {e}")
+    finally:
+        session.close()
+
+
+def search_cars(context: AppContext, query: str):
+    from denjyauto.ui.clients_ui import load_clients, load_single_client
+
+    query = query.strip().lower()
+
+    for widget in context.content_frame.winfo_children():
+        widget.destroy()
+
+    if not query:
+        load_clients(context)
+        return
+
+    session: Session = SessionLocal()
+    try:
+        matched_cars = session.query(Car).options(joinedload(Car.client)).filter(Car.registration_number.ilike(f"%{query}%")).all()
+
+        for car in matched_cars:
+            load_single_client(context, session, car.client)
+
     finally:
         session.close()
