@@ -66,5 +66,7 @@ class EditCarForm(tk.Toplevel):
         except Exception as e:
             session.rollback()
             messagebox.showerror("Грешка", str(e))
+            self.lift()
+            self.focus_force()
         finally:
             session.close()

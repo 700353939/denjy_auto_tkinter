@@ -41,7 +41,7 @@ class EditClientForm(tk.Toplevel):
             client.client_notes = self.notes_text.get("1.0", "end-1c").strip()
 
             session.commit()
-            messagebox.showinfo("Успех", "Клиентът е записан успешно.")
+            messagebox.showinfo("Готово", "Клиентът е записан успешно.")
 
             self.reload_callback()
             self.destroy()
@@ -49,5 +49,8 @@ class EditClientForm(tk.Toplevel):
         except Exception as e:
             session.rollback()
             messagebox.showerror("Грешка", str(e))
+            self.lift()
+            self.focus_force()
+
         finally:
             session.close()

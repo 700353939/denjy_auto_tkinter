@@ -1,7 +1,5 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-
-from sqlalchemy import func
 from sqlalchemy.orm import Session, joinedload
 from denjyauto.database import SessionLocal
 from denjyauto.forms.add_car_form import AddCarForm
@@ -131,7 +129,7 @@ def delete_car(car, reload_callback=None):
         car = session.query(Car).get(car.id)
         session.delete(car)
         session.commit()
-        messagebox.showinfo("Успех", f"Автомобилът '{car.registration_number}' е изтрит.")
+        messagebox.showinfo("Готово", f"Автомобилът '{car.registration_number}' е изтрит.")
         if reload_callback:
             reload_callback()
     except Exception as e:
@@ -225,7 +223,7 @@ def delete_repair(repair, reload_callback=None):
         repair = session.query(Repair).get(repair.id)
         session.delete(repair)
         session.commit()
-        messagebox.showinfo("Успех", f"Ремонтът е изтрит.")
+        messagebox.showinfo("Готово", f"Ремонтът е изтрит.")
         if reload_callback:
             reload_callback()
     except Exception as e:

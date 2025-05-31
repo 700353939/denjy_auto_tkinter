@@ -80,7 +80,7 @@ def load_clients(context: AppContext):
     finally:
         session.close()
 
-def load_single_client(context: AppContext, session: Session, client: Client):
+def load_single_client(context: AppContext, session: Session, client):
     try:
         client_frame = ttk.LabelFrame(
             context.content_frame,
@@ -245,7 +245,7 @@ def delete_client(client, reload_callback=None):
         client = session.query(Client).get(client.id)
         session.delete(client)
         session.commit()
-        messagebox.showinfo("Успех", f"Клиентът '{client.name}' е изтрит.")
+        messagebox.showinfo("Готово", f"Клиентът '{client.name}' е изтрит.")
         if reload_callback:
             reload_callback()
     except Exception as e:
@@ -253,8 +253,6 @@ def delete_client(client, reload_callback=None):
         messagebox.showerror("Грешка", f"Неуспешно изтриване: {e}")
     finally:
         session.close()
-
-from sqlalchemy import func
 
 def search_clients(context: AppContext, query: str):
     query = query.strip().lower()

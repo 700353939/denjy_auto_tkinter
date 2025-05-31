@@ -60,7 +60,7 @@ class AddRepairForm(tk.Toplevel):
         try:
             selected_types = [t for t, var in self.repair_type_vars.items() if var.get()]
             if not selected_types:
-                raise ValueError("Моля, избери поне един вид ремонт.")
+                raise ValueError("Избери поне един вид ремонт.")
 
             repair_km_text = self.repair_km_var.get()
             if repair_km_text and not repair_km_text.isdigit():
@@ -94,3 +94,5 @@ class AddRepairForm(tk.Toplevel):
 
         except Exception as e:
             messagebox.showerror("Грешка", str(e))
+            self.lift()
+            self.focus_force()

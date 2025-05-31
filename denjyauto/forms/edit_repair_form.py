@@ -65,7 +65,7 @@ class EditRepairForm(tk.Toplevel):
             repair.repair_notes = self.notes_text.get("1.0", "end-1c").strip()
 
             session.commit()
-            messagebox.showinfo("Успех", "Автомобилът е записан успешно.")
+            messagebox.showinfo("Готово", "Автомобилът е записан успешно.")
 
             self.reload_callback()
             self.destroy()
@@ -73,5 +73,7 @@ class EditRepairForm(tk.Toplevel):
         except Exception as e:
             session.rollback()
             messagebox.showerror("Грешка", str(e))
+            self.lift()
+            self.focus_force()
         finally:
             session.close()

@@ -7,7 +7,7 @@ from denjyauto.models.repair import Repair
 from datetime import datetime
 
 from denjyauto.ui.car_ui import show_repair_details
-from denjyauto.ui.widgets import create_scrollable_frame, close_parent_window_and
+from denjyauto.ui.widgets import create_scrollable_frame
 
 
 def income(context):

@@ -73,7 +73,7 @@ class NewClientForm(tk.Toplevel):
             session.add(car)
 
             session.commit()
-            messagebox.showinfo("Успех", "Клиентът и автомобилът са записани.")
+            messagebox.showinfo("Готово", "Клиентът и автомобилът са записани.")
 
             if self.on_client_added_callback:
                 self.on_client_added_callback()
@@ -83,5 +83,8 @@ class NewClientForm(tk.Toplevel):
         except Exception as e:
             session.rollback()
             messagebox.showerror("Грешка", str(e))
+            self.lift()
+            self.focus_force()
+
         finally:
             session.close()

@@ -4,18 +4,18 @@ from sqlalchemy.orm import Session
 from denjyauto.database import SessionLocal
 from denjyauto.models.car import Car
 
-class AddCarForm:
+class AddCarForm(tk.Toplevel):
     def __init__(self, context, client, reload_callback=None):
-        self.window = tk.Toplevel(context.master)
-        self.window.title("Добавяне на нов автомобил към клиент")
-        self.window.geometry("500x500")
-        self.window.configure(bg="gray80")
-        self.window.grab_set()
+        super().__init__(context.master)
+        self.title("Добавяне на нов автомобил към клиент")
+        self.geometry("500x500")
+        self.configure(bg="gray80")
+        self.grab_set()
 
         self.client = client
         self.reload_callback = reload_callback
 
-        ttk.Label(self.window, text=f"Въведете данни за автомобила на клиент: {self.client.name}",
+        ttk.Label(self, text=f"Въведете данни за автомобила на клиент: {self.client.name}",
                   foreground="dodger blue").pack(pady=20)
 
         self.registration_number_entry = self._create_labeled_entry("Регистрационен номер:")
@@ -24,11 +24,11 @@ class AddCarForm:
         self.model_entry = self._create_labeled_entry("Модел:")
         self.year_entry = self._create_labeled_entry("Година:")
 
-        ttk.Button(self.window, text="Добави автомобил", command=self.add_car).pack(pady=20)
+        ttk.Button(self, text="Добави автомобил", command=self.add_car).pack(pady=20)
 
     def _create_labeled_entry(self, label_text):
-        ttk.Label(self.window, text=label_text).pack()
-        entry = ttk.Entry(self.window)
+        ttk.Label(self, text=label_text).pack()
+        entry = ttk.Entry(self)
         entry.pack(pady=10)
         return entry
 
@@ -61,7 +61,9 @@ class AddCarForm:
             if self.reload_callback:
                 self.reload_callback(car.id)
 
-            self.window.destroy()
+            self.destroy()
 
         except Exception as e:
             messagebox.showerror("Грешка", str(e))
+            self.lift()
+            self.focus_force()
