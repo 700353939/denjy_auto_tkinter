@@ -8,7 +8,7 @@ class Repair(Base):
 
     id = Column(Integer, primary_key=True)
     repair_date = Column(Date, default=date.today)
-    repair_km = Column(Integer, nullable=True)
+    repair_km = Column(Integer, default=0)
     repairs_type_field = Column(String)  # MultiSelect симулация
     repair_price = Column(Float, default=0)
     repair_notes = Column(Text, nullable=True)

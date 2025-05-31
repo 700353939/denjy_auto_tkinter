@@ -35,7 +35,7 @@ class AddCarForm:
     def add_car(self):
         try:
             year_text = self.year_entry.get()
-            if not year_text.isdigit():
+            if year_text and not year_text.isdigit():
                 raise ValueError("Годината трябва да е число.")
 
             car = Car(
@@ -45,7 +45,7 @@ class AddCarForm:
                 vin=self.vin_entry.get(),
                 brand=self.brand_entry.get(),
                 model=self.model_entry.get(),
-                year=int(year_text)
+                year=int(year_text) if year_text else 0
             )
 
             if not car.registration_number:

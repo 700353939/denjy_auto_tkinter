@@ -162,8 +162,11 @@ def show_repair_details(context: AppContext, repair_id, car, client):
     ttk.Label(win, text=f"Телефон: {client.phone_number}").pack(anchor="n", padx=10, pady=5)
     ttk.Label(win, text=f"АВТОМОБИЛ: {car.registration_number}").pack(anchor="n", padx=10, pady=5)
     ttk.Label(win, text=f"ДАТА: {repair.repair_date}").pack(anchor="nw", padx=10, pady=5)
-    ttk.Label(win, text=f"КИЛОМЕТРИ ПРИ РЕМОНТА: {repair.repair_km}").pack(anchor="nw",padx=10, pady=5)
-    ttk.Label(win, text=f"РЕМОНТИ: \n{repair.repairs_type_field}", wraplength=500, justify="left").pack(anchor="nw",padx=10, pady=5)
+
+    repair_km = "" if repair.repair_km == 0 else repair.repair_km
+    ttk.Label(win, text=f"КИЛОМЕТРИ ПРИ РЕМОНТА: {repair_km}").pack(anchor="nw",padx=10, pady=5)
+
+    ttk.Label(win, text=f"РЕМОНТИ: {repair.repairs_type_field}", wraplength=500, justify="left").pack(anchor="nw",padx=10, pady=5)
     ttk.Label(win, text=f"БЕЛЕЖКИ: {repair.repair_notes}", wraplength=500, justify="left").pack(anchor="nw",padx=10, pady=5)
     ttk.Label(win, text=f"ЦЕНА НА РЕМОНТА: {repair.repair_price}").pack(anchor="nw",padx=10, pady=5)
 

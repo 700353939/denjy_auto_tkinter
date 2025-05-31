@@ -20,15 +20,11 @@ class EditRepairForm(tk.Toplevel):
         self.repair_date_entry.pack(pady=5, fill="x", padx=10)
 
         ttk.Label(self, text="Километри при ремонта:", background="gray80", foreground="black").pack(pady=5)
-        self.repair_km_var = tk.IntVar(value=repair.repair_km)
+        self.repair_km_var = tk.StringVar(value=repair.repair_km)
         self.repair_km_entry = ttk.Entry(self, textvariable=self.repair_km_var)
         self.repair_km_entry.pack(pady=5, fill="x", padx=10)
 
-        ttk.Label(self, text="Видове ремонти:", background="gray80", foreground="black").pack(pady=5)
-        # self.repairs_types_var = tk.StringVar(value=repair.repairs_type_field)
-        # self.repairs_types_entry = ttk.Entry(self, textvariable=self.repairs_types_var)
-        # self.repairs_types_entry.pack(pady=5, fill="x", padx=10)
-
+        ttk.Label(self, text="Ремонти:", background="gray80", foreground="black").pack(pady=5)
         self.repairs_types_text = tk.Text(self, height=6, bg="gray70", fg="black", insertbackground="black")
         self.repairs_types_text.pack(pady=5, fill="both", expand=True, padx=10)
         if repair.repairs_type_field:
@@ -59,7 +55,10 @@ class EditRepairForm(tk.Toplevel):
         try:
             repair = session.query(Repair).get(self.repair.id)
             repair.repair_date = datetime.strptime(self.repair_date_var.get(), "%Y-%m-%d").date()
-            repair.repair_km = self.repair_km_var.get()
+
+            repair_km_input = self.repair_km_var.get()
+            repair.repair_km = int(repair_km_input) if repair_km_input and repair_km_input.isdigit() else 0
+
             repair.repairs_type_field = self.repairs_types_text.get("1.0", "end-1c").strip()
             repair.repair_price = float(self.repair_price_var.get())
             repair.is_it_paid = self.is_paid_var.get()

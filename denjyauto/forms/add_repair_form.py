@@ -28,8 +28,8 @@ class AddRepairForm(tk.Toplevel):
         ttk.Entry(self, textvariable=self.date_var).pack()
 
         ttk.Label(self, text="Километри:").pack()
-        self.mileage_var = tk.StringVar()
-        ttk.Entry(self, textvariable=self.mileage_var).pack()
+        self.repair_km_var = tk.StringVar()
+        ttk.Entry(self, textvariable=self.repair_km_var).pack()
 
         ttk.Label(self, text="Видове ремонт:").pack()
         self.repair_type_vars = {}
@@ -62,11 +62,19 @@ class AddRepairForm(tk.Toplevel):
             if not selected_types:
                 raise ValueError("Моля, избери поне един вид ремонт.")
 
+            repair_km_text = self.repair_km_var.get()
+            if repair_km_text and not repair_km_text.isdigit():
+                raise ValueError("Годината трябва да е число.")
+
+            repair_price = self.price_var.get()
+            if not repair_price:
+                raise ValueError("Въвеждането на цена е задължително.")
+
             repair = Repair(
                 repair_date = datetime.strptime(self.date_var.get(), "%Y-%m-%d").date(),
-                repair_km=int(self.mileage_var.get()),
+                repair_km=int(repair_km_text) if repair_km_text else 0,
                 repairs_type_field=", ".join(selected_types),
-                repair_price=float(self.price_var.get()),
+                repair_price=float(repair_price),
                 is_it_paid=self.is_paid_var.get(),
                 repair_notes=self.notes_text.get("1.0", "end").strip(),
                 car_id=self.car.id
