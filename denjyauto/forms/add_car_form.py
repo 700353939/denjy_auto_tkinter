@@ -41,14 +41,15 @@ class AddCarForm:
             car = Car(
                 client_id=self.client.id,
                 registration_number=self.registration_number_entry.get(),
+                lower_registration_number=self.registration_number_entry.get().lower(),
                 vin=self.vin_entry.get(),
                 brand=self.brand_entry.get(),
                 model=self.model_entry.get(),
                 year=int(year_text)
             )
 
-            if not all([car.registration_number, car.vin, car.brand, car.model]):
-                raise ValueError("Всички полета трябва да са попълнени.")
+            if not car.registration_number:
+                raise ValueError("Регистрационният номер е задължителен.")
 
             session: Session = SessionLocal()
             session.add(car)

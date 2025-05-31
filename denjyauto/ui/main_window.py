@@ -70,7 +70,3 @@ class MainWindow:
         self.context.content_frame = create_scrollable_frame(master, scroll="both")
 
         load_clients(self.context)
-
-    def clear_search(self):
-        self.search_var.set("")
-        load_clients(self.context)

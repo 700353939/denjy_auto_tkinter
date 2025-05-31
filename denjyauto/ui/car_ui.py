@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+
+from sqlalchemy import func
 from sqlalchemy.orm import Session, joinedload
 from denjyauto.database import SessionLocal
 from denjyauto.forms.add_car_form import AddCarForm
@@ -48,7 +50,9 @@ def show_car_details(context: AppContext, car_id, client):
         create_copyable_label(win, text=f"VIN: {car.vin}")
         create_copyable_label(win, text=f"Марка: {car.brand}")
         create_copyable_label(win, text=f"Модел: {car.model}")
-        create_copyable_label(win, text=f"Година: {car.year}")
+
+        year = "" if car.year == 0  else car.year
+        create_copyable_label(win, text=f"Година: {year}")
 
         car_buttons_frame = ttk.Frame(win, padding=10)
         car_buttons_frame.pack(side="top", fill="y", pady=5)
@@ -242,7 +246,7 @@ def search_cars(context: AppContext, query: str):
 
     session: Session = SessionLocal()
     try:
-        matched_cars = session.query(Car).options(joinedload(Car.client)).filter(Car.registration_number.ilike(f"%{query}%")).all()
+        matched_cars = session.query(Car).options(joinedload(Car.client)).filter(Car.lower_registration_number.ilike(f"%{query}%")).all()
 
         for car in matched_cars:
             load_single_client(context, session, car.client)

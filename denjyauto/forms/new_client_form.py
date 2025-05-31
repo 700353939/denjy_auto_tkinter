@@ -49,20 +49,21 @@ class NewClientForm(tk.Toplevel):
             vin = self.vin_entry.get().strip().upper()
             brand = self.brand_entry.get().strip().capitalize()
             model = self.model_entry.get().strip().capitalize()
-            year_str = self.year_entry.get().strip()
+            year_str = self.year_entry.get().strip() if self.year_entry.get().strip() else 0
 
-            if not all([name, phone, reg_num, vin, brand, model, year_str]):
-                raise ValueError("Всички полета трябва да са попълнени.")
+            if not all([name, reg_num]):
+                raise ValueError("Полетата име и регистрационен номер са задължителни.")
 
-            if not year_str.isdigit():
+            if year_str and not year_str.isdigit():
                 raise ValueError("Годината трябва да е цяло число.")
 
-            client = Client(name=name, phone_number=phone, client_notes=notes)
+            client = Client(name=name, lower_name=name.lower(), phone_number=phone, client_notes=notes)
             session.add(client)
             session.flush()
 
             car = Car(
                 registration_number=reg_num,
+                lower_registration_number=reg_num.lower(),
                 vin=vin,
                 brand=brand,
                 model=model,

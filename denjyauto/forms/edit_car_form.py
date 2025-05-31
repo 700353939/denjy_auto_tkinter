@@ -36,7 +36,7 @@ class EditCarForm(tk.Toplevel):
         self.model_entry.pack(pady=5, fill="x", padx=10)
 
         ttk.Label(self, text="Година:", background="gray80", foreground="black").pack(pady=5)
-        self.year_var = tk.IntVar(value=car.year)
+        self.year_var = tk.StringVar(value=str(car.year) if car.year else "")
         self.year_entry = ttk.Entry(self, textvariable=self.year_var)
         self.year_entry.pack(pady=5, fill="x", padx=10)
 
@@ -47,13 +47,18 @@ class EditCarForm(tk.Toplevel):
         try:
             car = session.query(Car).get(self.car.id)
             car.registration_number = self.registration_number_var.get().strip().upper()
+            car.lower_registration_number = self.registration_number_var.get().strip().lower()
             car.vin = self.vin_var.get().strip().upper()
             car.brand = self.brand_var.get().strip().capitalize()
             car.model = self.model_var.get().strip().capitalize()
-            car.year = self.year_var.get()
+
+            year_input = self.year_var.get().strip()
+            if year_input and not year_input.isdigit():
+                raise ValueError("Годината трябва да е цяло число.")
+            car.year = int(year_input) if year_input else 0
 
             session.commit()
-            messagebox.showinfo("Успех", "Автомобилът е записан успешно.")
+            messagebox.showinfo("Готово", "Автомобилът е записан успешно.")
 
             self.reload_callback()
             self.destroy()

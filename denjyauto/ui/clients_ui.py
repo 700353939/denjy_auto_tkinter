@@ -268,7 +268,7 @@ def search_clients(context: AppContext, query: str):
 
     session: Session = SessionLocal()
     try:
-        matched_clients = session.query(Client).filter(func.lower(Client.name).like(f"%{query}%")).all()
+        matched_clients = session.query(Client).filter(Client.lower_name.like(f"%{query}%")).all()
 
         for client in matched_clients:
             load_single_client(context, session, client)

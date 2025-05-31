@@ -6,7 +6,8 @@ class Client(Base):
     __tablename__ = "client"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=True)
+    name = Column(String)
+    lower_name = Column(String)
     phone_number = Column(String(20), nullable=True)
     client_notes = Column(Text, nullable=True)
 

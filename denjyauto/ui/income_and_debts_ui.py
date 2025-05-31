@@ -68,7 +68,7 @@ def list_not_paid_repairs(context):
         ).all()
 
         if not repairs:
-            ttk.Label(win, text="Няма неплатени ремонти.").grid(row=0, column=0, sticky="w")
+            ttk.Label(repairs_frame, text="Няма неплатени ремонти.", style="Blue.TLabel").pack(side="top", padx=5, pady=5)
         else:
             for repair in repairs:
                 ttk.Button(
