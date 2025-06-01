@@ -103,5 +103,3 @@ def delete_repair(repair, reload_callback=None):
         messagebox.showerror("Грешка", f"Неуспешно изтриване: {e}")
     finally:
         session.close()
-
-

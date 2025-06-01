@@ -40,7 +40,7 @@ class AddCarForm(tk.Toplevel):
 
             car = Car(
                 client_id=self.client.id,
-                registration_number=self.registration_number_entry.get(),
+                registration_number=self.registration_number_entry.get().upper(),
                 lower_registration_number=self.registration_number_entry.get().lower(),
                 vin=self.vin_entry.get(),
                 brand=self.brand_entry.get(),
