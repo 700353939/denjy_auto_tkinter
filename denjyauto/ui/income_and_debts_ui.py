@@ -43,7 +43,6 @@ def income(context):
                 ).with_entities(Repair.repair_price)
                 .all()
             )
-            print(total_income)
             total = sum([r[0] for r in total_income if r[0] is not None])
             result_label.config(text=f"Общо: {total:.2f} лв.", foreground="red")
         finally:
