@@ -77,4 +77,3 @@ def list_not_paid_repairs(context):
                 ).pack(anchor="nw", padx=5, pady=5)
     finally:
         session.close()
-

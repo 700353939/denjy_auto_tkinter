@@ -64,6 +64,7 @@ class AddCarForm(tk.Toplevel):
             self.destroy()
 
         except Exception as e:
-            messagebox.showerror("Грешка", str(e))
-            self.lift()
-            self.focus_force()
+            if "UNIQUE constraint failed" in str(e):
+                messagebox.showerror("Грешка", "Автомобил с такъв регистрационен номер вече съществува.")
+            else:
+                messagebox.showerror("Грешка", str(e))

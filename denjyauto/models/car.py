@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from denjyauto.models.base import Base
 
@@ -6,7 +6,7 @@ class Car(Base):
     __tablename__ = "car"
 
     id = Column(Integer, primary_key=True)
-    registration_number = Column(String)
+    registration_number = Column(String, unique=True)
     lower_registration_number = Column(String)
     vin = Column(String, nullable=True)
     brand = Column(String, nullable=True)

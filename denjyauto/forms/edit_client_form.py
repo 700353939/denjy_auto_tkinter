@@ -36,7 +36,7 @@ class EditClientForm(tk.Toplevel):
         try:
             client = session.query(Client).get(self.client.id)
             client.name = self.name_var.get().strip()
-            client.name = self.name_var.get().strip().lower()
+            client.lower_name = self.name_var.get().strip().lower()
             client.phone_number = self.phone_var.get().strip()
             client.client_notes = self.notes_text.get("1.0", "end-1c").strip()
 

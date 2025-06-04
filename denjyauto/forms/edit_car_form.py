@@ -65,7 +65,10 @@ class EditCarForm(tk.Toplevel):
 
         except Exception as e:
             session.rollback()
-            messagebox.showerror("Грешка", str(e))
+            if "UNIQUE constraint failed" in str(e):
+                messagebox.showerror("Грешка", "Автомобил с такъв регистрационен номер вече съществува.")
+            else:
+                messagebox.showerror("Грешка", str(e))
             self.lift()
             self.focus_force()
         finally:
