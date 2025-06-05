@@ -1,4 +1,4 @@
-from tkinter import Frame, Canvas, Scrollbar, VERTICAL, HORIZONTAL
+from tkinter import Frame, Canvas, VERTICAL, HORIZONTAL
 from tkinter import ttk
 import tkinter as tk
 
@@ -53,9 +53,9 @@ def create_scrollable_frame(parent, scroll="vertical", use_ttk=True, style_name=
     def _on_linux_scroll_up(event): canvas.yview_scroll(-1, "units")
     def _on_linux_scroll_down(event): canvas.yview_scroll(1, "units")
 
-    scrollable_frame.bind_all("<MouseWheel>", _on_mousewheel)
-    scrollable_frame.bind_all("<Button-4>", _on_linux_scroll_up)
-    scrollable_frame.bind_all("<Button-5>", _on_linux_scroll_down)
+    scrollable_frame.bind("<MouseWheel>", _on_mousewheel)
+    scrollable_frame.bind("<Button-4>", _on_linux_scroll_up)
+    scrollable_frame.bind("<Button-5>", _on_linux_scroll_down)
 
     return scrollable_frame
 

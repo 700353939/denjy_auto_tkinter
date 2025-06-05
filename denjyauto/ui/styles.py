@@ -27,11 +27,6 @@ def apply_custom_style():
               background=[("active", "white"), ("pressed", "white")],
               foreground=[("active", "red"), ("pressed", "black")])
 
-    style.configure("Search.TButton", background="gray60", foreground="royal blue", padding=0, relief="flat", font=("Monospace", 10, "bold"))
-    style.map("RedText.TButton",
-              background=[("active", "white"), ("pressed", "white")],
-              foreground=[("active", "red"), ("pressed", "black")])
-
     # Entry
     style.configure("TEntry", fieldbackground="gray70", foreground="black", insertcolor="black")
 
