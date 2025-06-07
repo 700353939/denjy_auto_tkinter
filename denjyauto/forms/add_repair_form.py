@@ -10,8 +10,7 @@ REPAIR_TYPE_OPTIONS = [
     "Смяна на гуми", "Смяна на масло", "Маслен филтър", "Горивен филтър",
     "Въздушен филтър", "Филтър купе", "Ремонт на ходова част",
     "Смяна на съединител", "Ремонт на двигателя", "Диагностика", "Козметичен ремонт",
-    "Друг ремонт: Запиши в бележки", "Поръчка на части: Запиши в бележки",
-    "Записване на ден и час: Запиши в бележки",
+    "Друг ремонт", "Поръчка на части", "Записване на ден и час",
 ]
 
 class AddRepairForm(tk.Toplevel):
@@ -35,7 +34,11 @@ class AddRepairForm(tk.Toplevel):
         self.repair_type_vars = {}
         for option in REPAIR_TYPE_OPTIONS:
             var = tk.BooleanVar()
-            chk = ttk.Checkbutton(self, text=option, variable=var)
+            chk = ttk.Checkbutton(self,
+                                  text=f"{option}: запиши в бележки"
+                                  if option in ["Друг ремонт", "Поръчка на части", "Записване на ден и час"]
+                                  else f"{option}",
+                                  variable=var)
             chk.pack(anchor="w", padx=20)
             self.repair_type_vars[option] = var
 
