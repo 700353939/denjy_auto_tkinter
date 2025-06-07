@@ -15,7 +15,7 @@ class EditRepairForm(tk.Toplevel):
         self.reload_callback = reload_callback
 
         ttk.Label(self, text="Дата на ремонта:", background="gray80", foreground="black").pack(pady=5)
-        self.repair_date_var = tk.StringVar(value=repair.repair_date.strftime("%Y-%m-%d"))
+        self.repair_date_var = tk.StringVar(value=repair.repair_date.strftime("%d-%m-%Y"))
         self.repair_date_entry = ttk.Entry(self, textvariable=self.repair_date_var)
         self.repair_date_entry.pack(pady=5, fill="x", padx=10)
 
@@ -54,7 +54,7 @@ class EditRepairForm(tk.Toplevel):
         session: Session = SessionLocal()
         try:
             repair = session.query(Repair).get(self.repair.id)
-            repair.repair_date = datetime.strptime(self.repair_date_var.get(), "%Y-%m-%d").date()
+            repair.repair_date = datetime.strptime(self.repair_date_var.get(), "%d-%m-%Y").date()
 
             repair_km_input = self.repair_km_var.get()
             repair.repair_km = int(repair_km_input) if repair_km_input and repair_km_input.isdigit() else 0

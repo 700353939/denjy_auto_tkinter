@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+from denjyauto.ui.appointments_calendar import open_calendar_window
 from denjyauto.ui.car_ui import search_cars
 from denjyauto.ui.income_and_debts_ui import income, list_not_paid_repairs
 from denjyauto.ui.widgets import create_scrollable_frame
@@ -24,13 +25,16 @@ class MainWindow:
             self.start_frame,
             text="ОБНОВИ СПИСЪКА",
             command=lambda: load_clients(self.context)
-        ).pack(side="left", pady=10, padx=50, fill="x", expand=True)
+        ).pack(side="left", pady=10, padx=10, fill="x", expand=True)
 
         ttk.Button(
             self.start_frame,
             text="НОВ КЛИЕНТ",
             command=lambda: add_new_client(self.context)
         ).pack(side="left", pady=10, padx=10, fill="x", expand=True)
+
+        ttk.Button(self.start_frame, text="КАЛЕНДАР ПРЕГЛЕДИ",
+                   command=lambda: open_calendar_window(self.context)).pack(side="left", pady=10, padx=10, fill="x", expand=True)
 
         ttk.Label(
             self.start_frame,

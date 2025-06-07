@@ -10,7 +10,7 @@ REPAIR_TYPE_OPTIONS = [
     "Смяна на гуми", "Смяна на масло", "Маслен филтър", "Горивен филтър",
     "Въздушен филтър", "Филтър купе", "Ремонт на ходова част",
     "Смяна на съединител", "Ремонт на двигателя", "Диагностика", "Козметичен ремонт",
-    "Друг ремонт", "Поръчка на части", "Записване на ден и час",
+    "Друг ремонт", "Поръчка на части",
 ]
 
 class AddRepairForm(tk.Toplevel):
@@ -23,7 +23,7 @@ class AddRepairForm(tk.Toplevel):
         self.reload_callback = reload_callback
 
         ttk.Label(self, text="Дата:").pack()
-        self.date_var = tk.StringVar(value=str(date.today()))
+        self.date_var = tk.StringVar(value=date.today().strftime("%d-%m-%Y"))
         ttk.Entry(self, textvariable=self.date_var).pack()
 
         ttk.Label(self, text="Километри:").pack()
@@ -36,7 +36,7 @@ class AddRepairForm(tk.Toplevel):
             var = tk.BooleanVar()
             chk = ttk.Checkbutton(self,
                                   text=f"{option}: запиши в бележки"
-                                  if option in ["Друг ремонт", "Поръчка на части", "Записване на ден и час"]
+                                  if option in ["Друг ремонт", "Поръчка на части"]
                                   else f"{option}",
                                   variable=var)
             chk.pack(anchor="w", padx=20)
@@ -74,7 +74,7 @@ class AddRepairForm(tk.Toplevel):
                 raise ValueError("Въвеждането на цена е задължително.")
 
             repair = Repair(
-                repair_date = datetime.strptime(self.date_var.get(), "%Y-%m-%d").date(),
+                repair_date = datetime.strptime(self.date_var.get(), "%d-%m-%Y").date(),
                 repair_km=int(repair_km_text) if repair_km_text else 0,
                 repairs_type_field=", ".join(selected_types),
                 repair_price=float(repair_price),

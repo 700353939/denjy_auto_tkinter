@@ -23,7 +23,7 @@ def export_repair_to_txt(context, repair, car, client):
         with open(file_path, "w", encoding="utf-8") as f:
             f.write("\nD E N J Y   A U T O\n")
             f.write(f"\nКлиент: {client.name}, "
-                       f"Дата: {repair.repair_date}, "
+                       f"Дата: {repair.repair_date.strftime('%d-%m-%Y')}, "
                        f"Автомобил: {car.registration_number}, "
                        f"Километри: {repair.repair_km}\n")
             f.write(f"Видове ремонти:\n{repair.repairs_type_field}\n")
@@ -43,7 +43,7 @@ def export_repair_to_docx(context, repair, car, client):
     docx.add_heading("Детайли за ремонт", level=1)
     docx.add_paragraph()
     docx.add_paragraph(f"Клиент: {client.name}, "
-                       f"Дата: {repair.repair_date}, "
+                       f"Дата: {repair.repair_date.strftime('%d-%m-%Y')}, "
                        f"Автомобил: {car.registration_number}, "
                        f"Километри: {repair.repair_km}")
 
@@ -92,7 +92,7 @@ def export_repair_to_pdf(context, repair, car, client):
     c.setFont("JetBrainsMono", 12)
     c.drawString(50, y, f"Клиент: {client.name}, Автомобил: {car.registration_number}")
     y -= 20
-    c.drawString(50, y,f"Дата: {repair.repair_date}, Километри: {repair.repair_km}")
+    c.drawString(50, y,f"Дата: {repair.repair_date.strftime('%d-%m-%Y')}, Километри: {repair.repair_km}")
     y -= 20
     c.drawString(50, y, f"Видове ремонт:")
     y -= 20

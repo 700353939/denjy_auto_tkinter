@@ -16,4 +16,4 @@ class Car(Base):
 
     client = relationship("Client", back_populates="cars")
     repairs = relationship("Repair", back_populates="car", cascade="all, delete")
-
+    appointments = relationship("Appointment", back_populates="car")

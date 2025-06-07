@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 from sqlalchemy.orm import Session, joinedload
 from denjyauto.database import SessionLocal
 from denjyauto.forms.add_car_form import AddCarForm
+from denjyauto.forms.appointments_form import AppointmentForm
 from denjyauto.forms.edit_car_form import EditCarForm
 from denjyauto.models.car import Car
 from denjyauto.models.client import Client
@@ -40,7 +41,9 @@ def search_cars(context: AppContext, query: str):
 
     session: Session = SessionLocal()
     try:
-        matched_cars = session.query(Car).options(joinedload(Car.client)).filter(Car.lower_registration_number.ilike(f"%{query}%")).all()
+        matched_cars = (session.query(Car)
+                        .options(joinedload(Car.client))
+                        .filter(Car.lower_registration_number.ilike(f"%{query}%")).all())
 
         for car in matched_cars:
             load_single_client(context, session, car.client)
@@ -61,7 +64,7 @@ def show_car_details(context: AppContext, car_id, client):
         win = tk.Toplevel(context.master)
         win.title("Детайли автомобил")
         win.configure(background="gray80")
-        win.geometry("600x600")
+        win.geometry("750x600")
 
         ttk.Label(win, text=f"Клиент: {client.name}", foreground="dodger blue").pack(anchor="nw", pady=5, padx=10)
 
@@ -75,6 +78,13 @@ def show_car_details(context: AppContext, car_id, client):
 
         car_buttons_frame = ttk.Frame(win, padding=10)
         car_buttons_frame.pack(side="top", fill="y", pady=5)
+
+        ttk.Button(
+            car_buttons_frame,
+            text="НАСРОЧИ ПРЕГЛЕД",
+            command=lambda: close_parent_window_and(AppointmentForm, car_buttons_frame, context, car,
+                                            reload_callback=lambda: show_car_details(context, car.id, client))
+        ).pack(side="left", padx=10, pady=5)
 
         ttk.Button(
             car_buttons_frame,
@@ -111,7 +121,7 @@ def show_car_details(context: AppContext, car_id, client):
                 column = i % 4
                 ttk.Button(
                     repairs_frame,
-                    text=f"Ремонт: {repair.repair_date}",
+                    text=f"Ремонт: {repair.repair_date.strftime('%d-%m-%Y')}",
                     command=lambda r=repair: close_parent_window_and(
                         show_repair_details,
                         repairs_frame,

@@ -72,7 +72,9 @@ def list_not_paid_repairs(context):
             for repair in repairs:
                 ttk.Button(
                     repairs_frame,
-                    text=f"Клиент: {repair.car.client.name}, Автомобил {repair.car.registration_number}, дата на ремонта: {repair.repair_date}",
+                    text=f"Клиент: {repair.car.client.name}, "
+                         f"Автомобил {repair.car.registration_number}, "
+                         f"дата на ремонта: {repair.repair_date.strftime('%d-%m-%Y')}",
                     command=lambda r=repair: show_repair_details(context, r.id, r.car, r.car.client)
                 ).pack(anchor="nw", padx=5, pady=5)
     finally:
