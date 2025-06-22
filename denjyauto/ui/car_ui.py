@@ -5,6 +5,7 @@ from denjyauto.database import SessionLocal
 from denjyauto.forms.add_car_form import AddCarForm
 from denjyauto.forms.appointments_form import AppointmentForm
 from denjyauto.forms.edit_car_form import EditCarForm
+from denjyauto.models.appointments import Appointment
 from denjyauto.models.car import Car
 from denjyauto.models.client import Client
 from denjyauto.models.repair import Repair
@@ -75,6 +76,15 @@ def show_car_details(context: AppContext, car_id, client):
 
         year = "" if car.year == 0  else car.year
         create_copyable_label(win, text=f"Година: {year}")
+
+        appointments = session.query(Appointment).filter_by(car_id=car.id)
+        appointments_frame = ttk.LabelFrame(win, text="НАСРОЧЕНИ ПРЕГЛЕДИ:")
+        appointments_frame.pack()
+        for appointment in appointments:
+            ttk.Label(
+                appointments_frame,
+                text=f"дата: {appointment.date.strftime('%d-%m-%Y')}, час: {appointment.hour}"
+            ).pack(pady=5, padx=10)
 
         car_buttons_frame = ttk.Frame(win, padding=10)
         car_buttons_frame.pack(side="top", fill="y", pady=5)
