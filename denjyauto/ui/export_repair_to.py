@@ -1,4 +1,6 @@
 import os
+from denjyauto.path_utils import resource_path
+
 from tkinter import messagebox, filedialog
 from docx import Document
 from reportlab.lib.pagesizes import A4
@@ -38,7 +40,7 @@ def export_repair_to_txt(context, repair, car, client):
 
 def export_repair_to_docx(context, repair, car, client):
     docx = Document()
-    docx.add_picture("images/denjyauto.gif")
+    docx.add_picture(resource_path("images/denjyauto.gif"))
     docx.paragraphs[-1].alignment = 1
     docx.add_heading("Детайли за ремонт", level=1)
     docx.add_paragraph()
@@ -62,8 +64,7 @@ def export_repair_to_docx(context, repair, car, client):
     os.startfile(file_path)
 
 def export_repair_to_pdf(context, repair, car, client):
-
-    pdfmetrics.registerFont(TTFont("JetBrainsMono", "fonts/JetBrainsMono-ExtraLight.ttf"))
+    pdfmetrics.registerFont(TTFont("JetBrainsMono", resource_path("fonts/JetBrainsMono-ExtraLight.ttf")))
 
     file_path = filedialog.asksaveasfilename(
         parent=context.master,
@@ -76,7 +77,7 @@ def export_repair_to_pdf(context, repair, car, client):
     width, height = A4
     y = height - 50
 
-    image_path = "images/denjyauto.gif"
+    image_path = resource_path("images/denjyauto.gif")
     try:
         img_width = 2.0 * inch
         x_image = (width - img_width) / 2

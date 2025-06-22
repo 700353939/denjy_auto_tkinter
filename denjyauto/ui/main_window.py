@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from denjyauto.path_utils import resource_path
 
 from denjyauto.ui.appointments_calendar import open_calendar_window
 from denjyauto.ui.car_ui import search_cars
@@ -13,7 +14,7 @@ class MainWindow:
         self.context = AppContext(master)
         master.title("DenjyAuto")
 
-        self.logo_image = tk.PhotoImage(file="images/denjyauto.gif")
+        self.logo_image = tk.PhotoImage(file=resource_path("images/denjyauto.gif"))
 
         self.start_frame = ttk.Frame(master)
         self.start_frame.pack()
