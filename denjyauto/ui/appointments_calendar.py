@@ -1,5 +1,5 @@
 from tkcalendar import Calendar
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import tkinter as tk
 from sqlalchemy.orm import Session, joinedload
 from denjyauto.database import SessionLocal
@@ -70,3 +70,23 @@ def open_calendar_window(context):
                       ).pack(anchor="nw", pady=5, padx=10)
 
     cal.bind("<<CalendarSelected>>", on_date_selected)
+
+def delete_appointment(appointment, reload_callback=None):
+    confirm = messagebox.askyesno("Потвърждение",
+                                  f"Сигурен ли си, че искаш да изтриеш насроченият преглед.")
+    if not confirm:
+        return
+
+    session: Session = SessionLocal()
+    try:
+        appointment = session.query(Appointment).get(appointment.id)
+        session.delete(appointment)
+        session.commit()
+        messagebox.showinfo("Готово", f"Прегледът е изтрит.")
+        if reload_callback:
+            reload_callback()
+    except Exception as e:
+        session.rollback()
+        messagebox.showerror("Грешка", f"Неуспешно изтриване: {e}")
+    finally:
+        session.close()

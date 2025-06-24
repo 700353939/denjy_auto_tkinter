@@ -10,6 +10,7 @@ from denjyauto.models.car import Car
 from denjyauto.models.client import Client
 from denjyauto.models.repair import Repair
 from denjyauto.context import AppContext
+from denjyauto.ui.appointments_calendar import delete_appointment
 from denjyauto.ui.repair_ui import add_repair_to_car, show_repair_details
 from denjyauto.ui.widgets import create_copyable_label, create_scrollable_frame, close_parent_window_and
 
@@ -85,7 +86,12 @@ def show_car_details(context: AppContext, car_id, client):
             ttk.Button(
                 appointments_frame,
                 text=f" Изтрий прегледа на дата: {appointment.date.strftime('%d-%m-%Y')}, час: {appointment.hour}",
-                style="RedText.TButton"
+                style="RedText.TButton",
+                command=lambda a=appointment: close_parent_window_and(
+                    delete_appointment,
+                    appointments_frame,
+                    a,
+                    reload_callback=lambda: show_car_details(context, car.id, client))
             ).pack(pady=5, padx=5, fill="x")
 
         car_buttons_frame = ttk.Frame(win, padding=10)
