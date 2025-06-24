@@ -23,7 +23,7 @@ def load_clients(context: AppContext):
 
             client_frame = ttk.LabelFrame(
                 context.content_frame,
-                text=f"Име на клиента: {client.name}, телефон: {client.phone_number}",
+                text=f"Име: {client.name}, телефон: {client.phone_number}",
                 padding=10,
                 labelanchor="n"
             )

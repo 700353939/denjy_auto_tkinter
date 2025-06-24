@@ -10,7 +10,7 @@ def apply_custom_style():
     # Frame и LabelFrame
     style.configure("TFrame", background="gray80")
     style.configure("TLabelframe", background="gray80", foreground="black")
-    style.configure("TLabelframe.Label", background="gray80", foreground="dodger blue", font=("Monospace", 10, "bold"))
+    style.configure("TLabelframe.Label", background="gray80", foreground="dodger blue", font=("Monospace", 12, "bold"))
 
     # Label
     style.configure("TLabel", background="gray80", foreground="black")

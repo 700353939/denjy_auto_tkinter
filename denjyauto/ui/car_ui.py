@@ -78,13 +78,15 @@ def show_car_details(context: AppContext, car_id, client):
         create_copyable_label(win, text=f"Година: {year}")
 
         appointments = session.query(Appointment).filter_by(car_id=car.id)
-        appointments_frame = ttk.LabelFrame(win, text="НАСРОЧЕНИ ПРЕГЛЕДИ:")
+        appointments_frame = ttk.LabelFrame(win, text="Насрочени Прегледи:")
         appointments_frame.pack()
+
         for appointment in appointments:
-            ttk.Label(
+            ttk.Button(
                 appointments_frame,
-                text=f"дата: {appointment.date.strftime('%d-%m-%Y')}, час: {appointment.hour}"
-            ).pack(pady=5, padx=10)
+                text=f" Изтрий прегледа на дата: {appointment.date.strftime('%d-%m-%Y')}, час: {appointment.hour}",
+                style="RedText.TButton"
+            ).pack(pady=5, padx=5, fill="x")
 
         car_buttons_frame = ttk.Frame(win, padding=10)
         car_buttons_frame.pack(side="top", fill="y", pady=5)
